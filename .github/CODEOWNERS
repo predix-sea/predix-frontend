@@ -1,0 +1,13 @@
+# Global owner
+* @wgw31king
+
+# Critical paths
+/src/ @wgw31king
+/main/ @wgw31king
+/java/ @wgw31king
+/resources/ @wgw31king
+/contracts/ @wgw31king
+/.github/workflows/ @wgw31king
+/scripts/ @wgw31king
+/docker/ @wgw31king
+/pom.xml @wgw31king
