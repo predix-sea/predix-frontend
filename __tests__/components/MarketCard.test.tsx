@@ -1,0 +1,22 @@
+import { describe, expect, it } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { MarketCard } from '@/components/markets/MarketCard';
+
+describe('MarketCard', () => {
+  it('renders market title and status', () => {
+    render(
+      <MarketCard
+        market={{
+          id: 'm1',
+          title: 'Will BTC hit 100k?',
+          status: 'OPEN',
+          volume: 50000,
+          outcomes: [{ id: 'yes', label: 'Yes' }],
+        }}
+      />,
+    );
+
+    expect(screen.getByText('Will BTC hit 100k?')).toBeInTheDocument();
+    expect(screen.getByText('OPEN')).toBeInTheDocument();
+  });
+});
