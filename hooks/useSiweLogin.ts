@@ -33,7 +33,7 @@ export function useSiweLogin() {
 
       setWallet(address, chainId);
 
-      const nonceRes = await authService.getNonce();
+      const nonceRes = await authService.getNonce(address);
       const message = nonceRes.message;
 
       let signature: string;

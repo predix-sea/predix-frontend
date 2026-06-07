@@ -2,11 +2,14 @@ import { bffRequest } from './bffClient';
 import type { AuthTokenResponse, MeResponse, NonceResponse, SiweVerifyRequest } from '@/types';
 
 export const authService = {
-  getNonce: () =>
-    bffRequest<NonceResponse>('/api/v1/auth/siwe/nonce', {
-      method: 'GET',
-      skipAuth: true,
-    }),
+  getNonce: (address: string) =>
+    bffRequest<NonceResponse>(
+      `/api/v1/auth/siwe/nonce?address=${encodeURIComponent(address)}`,
+      {
+        method: 'GET',
+        skipAuth: true,
+      },
+    ),
 
   verify: (payload: SiweVerifyRequest) =>
     bffRequest<AuthTokenResponse>('/api/v1/auth/siwe/verify', {
