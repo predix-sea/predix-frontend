@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { AuthProvider } from '@/features/auth/AuthProvider';
 import { SessionBootstrap } from '@/features/auth/SessionBootstrap';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
+import { I18nProvider } from '@/components/i18n/I18nProvider';
+import { ThemeProvider } from '@/components/i18n/ThemeProvider';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -22,10 +24,14 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <ErrorBoundary>
-        <AuthProvider>
-          <SessionBootstrap />
-          {children}
-        </AuthProvider>
+        <ThemeProvider>
+          <I18nProvider>
+            <AuthProvider>
+              <SessionBootstrap />
+              {children}
+            </AuthProvider>
+          </I18nProvider>
+        </ThemeProvider>
       </ErrorBoundary>
     </QueryClientProvider>
   );

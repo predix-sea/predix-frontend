@@ -1,0 +1,146 @@
+{
+  "nav": {
+    "markets": "Pasar",
+    "portfolio": "Portofolio",
+    "orders": "Pesanan"
+  },
+  "header": {
+    "connect": "Hubungkan",
+    "kycRequired": "KYC Diperlukan",
+    "settings": "Pengaturan"
+  },
+  "markets": {
+    "title": "Pasar",
+    "subtitle": "Perdagangkan hasil dunia nyata di Asia Tenggara",
+    "searchPlaceholder": "Cari pasar…",
+    "allStatuses": "Semua status",
+    "noMarkets": "Tidak ada pasar ditemukan",
+    "loadError": "Gagal memuat pasar. Pastikan BFF berjalan.",
+    "categoryTabsAria": "Kategori pasar"
+  },
+  "status": {
+    "open": "BUKA",
+    "closed": "TUTUP",
+    "resolved": "DISELESAIKAN",
+    "paused": "DIJEDA"
+  },
+  "categories": {
+    "trending": "Trending",
+    "crypto": "Kripto",
+    "macro": "Makro",
+    "sports": "Olahraga",
+    "politics": "Politik",
+    "environment": "Lingkungan"
+  },
+  "common": {
+    "loading": "Memuat…",
+    "language": "Bahasa",
+    "dismiss": "Tutup"
+  },
+  "settings": {
+    "title": "Pengaturan",
+    "language": "Bahasa",
+    "languageHint": "Perubahan bahasa berlaku segera di seluruh aplikasi."
+  },
+  "login": {
+    "title": "Hubungkan Dompet",
+    "subtitle": "Masuk dengan Ethereum (SIWE) melalui MetaMask. Kunci Anda tidak pernah meninggalkan dompet.",
+    "connectMetaMask": "Hubungkan MetaMask",
+    "signingIn": "Sedang masuk…",
+    "step1": "Minta nonce dari PrediX BFF",
+    "step2": "Tandatangani pesan SIWE di dompet Anda",
+    "step3": "Verifikasi tanda tangan dan terima token sesi"
+  },
+  "trading": {
+    "marketNotFound": "Pasar tidak ditemukan",
+    "buyYes": "Beli Yes",
+    "buyNo": "Beli No",
+    "volume": "Volume",
+    "ends": "Berakhir",
+    "yes": "Yes",
+    "no": "No",
+    "buy": "Beli",
+    "sell": "Jual",
+    "limit": "Limit",
+    "market": "Market",
+    "change24h": "Perubahan 24j",
+    "demo": "(demo)",
+    "tabChart": "Grafik",
+    "tabOrderBook": "Buku Pesanan",
+    "tabActivity": "Aktivitas",
+    "noRecentTrades": "Belum ada perdagangan terbaru. Jadilah yang pertama berdagang di pasar ini.",
+    "sharesUnit": "saham",
+    "demoActivity": "Aktivitas demo — perdagangan langsung akan muncul saat pasar aktif.",
+    "bestBid": "Bid Terbaik",
+    "bestAsk": "Ask Terbaik",
+    "spread": "Spread",
+    "priceCents": "Harga (¢)",
+    "sharesCol": "Saham",
+    "totalUsd": "Total ($)",
+    "loadOrderBookError": "Gagal memuat buku pesanan",
+    "orderBookEmpty": "Buku pesanan kosong",
+    "orderBookEmptyHint": "Tempatkan pesanan pertama untuk mulai berdagang.",
+    "mockOrderBook": "Buku pesanan demo — data langsung akan aktif saat BFF tersedia.",
+    "lastTrade": "Perdagangan terakhir",
+    "unableLoadPriceHistory": "Tidak dapat memuat riwayat harga",
+    "noPriceData": "Tidak ada data harga untuk rentang ini",
+    "demoPriceHistory": "Riwayat harga demo — candle langsung akan muncul saat API tersedia.",
+    "placeOrder": "Tempatkan Pesanan",
+    "outcome": "Hasil",
+    "sizeShares": "Ukuran (saham)",
+    "priceRange": "Harga (0–1)",
+    "selectOutcome": "Pilih hasil",
+    "orderSubmitted": "Pesanan berhasil dikirim",
+    "submitting": "Mengirim…",
+    "submitOrder": "Kirim Pesanan",
+    "tradingDisabled": "Perdagangan Dinonaktifkan",
+    "connectToTrade": "Hubungkan dompet",
+    "connectToTradeSuffix": "untuk berdagang",
+    "marketOrderAbbr": "MKT",
+    "validation": {
+      "sizeGtZero": "Ukuran harus lebih dari 0",
+      "sizeDecimals": "Ukuran mendukung hingga 6 desimal",
+      "limitPriceGtZero": "Harga limit harus lebih dari 0",
+      "priceRange": "Harga harus antara 0 dan 1 untuk saham prediksi",
+      "priceDecimals": "Harga mendukung hingga 4 desimal"
+    }
+  },
+  "orders": {
+    "title": "Pesanan",
+    "allStatuses": "Semua status",
+    "loadError": "Gagal memuat pesanan. Endpoint daftar mungkin belum tersedia di BFF.",
+    "noOrders": "Tidak ada pesanan",
+    "cancel": "Batal",
+    "colId": "ID",
+    "colMarket": "Pasar",
+    "colSide": "Sisi",
+    "colType": "Tipe",
+    "colSize": "Ukuran",
+    "colPrice": "Harga",
+    "colStatus": "Status",
+    "statusOpen": "Terbuka",
+    "statusFilled": "Terisi",
+    "statusCancelled": "Dibatalkan",
+    "statusPending": "Tertunda",
+    "statusPartiallyFilled": "Terisi Sebagian"
+  },
+  "portfolio": {
+    "title": "Portofolio",
+    "balances": "Saldo",
+    "positions": "Posisi",
+    "locked": "Terkunci {amount}",
+    "noBalanceData": "Tidak ada data saldo (KYC mungkin diperlukan)",
+    "noPositions": "Belum ada posisi",
+    "colMarket": "Pasar",
+    "colOutcome": "Hasil",
+    "colSize": "Ukuran",
+    "colAvg": "Rata-rata",
+    "colPnl": "PnL"
+  },
+  "compliance": {
+    "regionBlocked": "Akses dari wilayah Anda tidak diizinkan.",
+    "learnMore": "Pelajari lebih lanjut",
+    "kycRequiredTitle": "Verifikasi KYC diperlukan",
+    "kycRequiredBody": "Anda dapat menjelajahi pasar, tetapi perdagangan dan tindakan dana dinonaktifkan hingga KYC disetujui."
+  }
+}

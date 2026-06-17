@@ -1,8 +1,17 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MarketCard } from '@/components/markets/MarketCard';
+import { useLocaleStore } from '@/stores/localeStore';
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: vi.fn() }),
+}));
 
 describe('MarketCard', () => {
+  beforeEach(() => {
+    useLocaleStore.setState({ locale: 'en' });
+  });
+
   it('renders market title and status', () => {
     render(
       <MarketCard
@@ -17,6 +26,6 @@ describe('MarketCard', () => {
     );
 
     expect(screen.getByText('Will BTC hit 100k?')).toBeInTheDocument();
-    expect(screen.getByText('OPEN')).toBeInTheDocument();
+    expect(screen.getByText('Open')).toBeInTheDocument();
   });
 });

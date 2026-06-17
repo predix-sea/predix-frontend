@@ -1,0 +1,146 @@
+{
+  "nav": {
+    "markets": "Thị trường",
+    "portfolio": "Danh mục",
+    "orders": "Lệnh"
+  },
+  "header": {
+    "connect": "Kết nối",
+    "kycRequired": "Yêu cầu KYC",
+    "settings": "Cài đặt"
+  },
+  "markets": {
+    "title": "Thị trường",
+    "subtitle": "Giao dịch kết quả thực tế khắp Đông Nam Á",
+    "searchPlaceholder": "Tìm thị trường…",
+    "allStatuses": "Tất cả trạng thái",
+    "noMarkets": "Không tìm thấy thị trường",
+    "loadError": "Không tải được thị trường. Hãy đảm bảo BFF đang chạy.",
+    "categoryTabsAria": "Danh mục thị trường"
+  },
+  "status": {
+    "open": "MỞ",
+    "closed": "ĐÓNG",
+    "resolved": "ĐÃ GIẢI QUYẾT",
+    "paused": "TẠM DỪNG"
+  },
+  "categories": {
+    "trending": "Xu hướng",
+    "crypto": "Crypto",
+    "macro": "Vĩ mô",
+    "sports": "Thể thao",
+    "politics": "Chính trị",
+    "environment": "Môi trường"
+  },
+  "common": {
+    "loading": "Đang tải…",
+    "language": "Ngôn ngữ",
+    "dismiss": "Đóng"
+  },
+  "settings": {
+    "title": "Cài đặt",
+    "language": "Ngôn ngữ",
+    "languageHint": "Thay đổi ngôn ngữ có hiệu lực ngay trên toàn bộ ứng dụng."
+  },
+  "login": {
+    "title": "Kết nối ví",
+    "subtitle": "Đăng nhập bằng Ethereum (SIWE) qua MetaMask. Khóa của bạn không bao giờ rời khỏi ví.",
+    "connectMetaMask": "Kết nối MetaMask",
+    "signingIn": "Đang đăng nhập…",
+    "step1": "Yêu cầu nonce từ PrediX BFF",
+    "step2": "Ký thông điệp SIWE trong ví của bạn",
+    "step3": "Xác minh chữ ký và nhận token phiên"
+  },
+  "trading": {
+    "marketNotFound": "Không tìm thấy thị trường",
+    "buyYes": "Mua Yes",
+    "buyNo": "Mua No",
+    "volume": "Khối lượng",
+    "ends": "Kết thúc",
+    "yes": "Yes",
+    "no": "No",
+    "buy": "Mua",
+    "sell": "Bán",
+    "limit": "Limit",
+    "market": "Market",
+    "change24h": "Thay đổi 24h",
+    "demo": "(demo)",
+    "tabChart": "Biểu đồ",
+    "tabOrderBook": "Sổ lệnh",
+    "tabActivity": "Giao dịch",
+    "noRecentTrades": "Chưa có giao dịch gần đây. Hãy là người đầu tiên giao dịch thị trường này.",
+    "sharesUnit": "cổ phần",
+    "demoActivity": "Giao dịch demo — giao dịch trực tiếp sẽ hiển thị khi thị trường hoạt động.",
+    "bestBid": "Giá mua tốt nhất",
+    "bestAsk": "Giá bán tốt nhất",
+    "spread": "Spread",
+    "priceCents": "Giá (¢)",
+    "sharesCol": "Cổ phần",
+    "totalUsd": "Tổng ($)",
+    "loadOrderBookError": "Không tải được sổ lệnh",
+    "orderBookEmpty": "Sổ lệnh trống",
+    "orderBookEmptyHint": "Đặt lệnh đầu tiên để bắt đầu giao dịch.",
+    "mockOrderBook": "Sổ lệnh demo — dữ liệu trực tiếp sẽ bật khi BFF sẵn sàng.",
+    "lastTrade": "Giao dịch cuối",
+    "unableLoadPriceHistory": "Không tải được lịch sử giá",
+    "noPriceData": "Không có dữ liệu giá cho khoảng thời gian này",
+    "demoPriceHistory": "Lịch sử giá demo — nến trực tiếp sẽ hiển thị khi API sẵn sàng.",
+    "placeOrder": "Đặt lệnh",
+    "outcome": "Kết quả",
+    "sizeShares": "Khối lượng (cổ phần)",
+    "priceRange": "Giá (0–1)",
+    "selectOutcome": "Chọn kết quả",
+    "orderSubmitted": "Đã gửi lệnh thành công",
+    "submitting": "Đang gửi…",
+    "submitOrder": "Gửi lệnh",
+    "tradingDisabled": "Giao dịch bị vô hiệu",
+    "connectToTrade": "Kết nối ví",
+    "connectToTradeSuffix": "để giao dịch",
+    "marketOrderAbbr": "MKT",
+    "validation": {
+      "sizeGtZero": "Khối lượng phải lớn hơn 0",
+      "sizeDecimals": "Khối lượng hỗ trợ tối đa 6 chữ số thập phân",
+      "limitPriceGtZero": "Giá limit phải lớn hơn 0",
+      "priceRange": "Giá phải nằm trong khoảng 0 đến 1 cho cổ phần dự đoán",
+      "priceDecimals": "Giá hỗ trợ tối đa 4 chữ số thập phân"
+    }
+  },
+  "orders": {
+    "title": "Lệnh",
+    "allStatuses": "Tất cả trạng thái",
+    "loadError": "Không tải được lệnh. Endpoint danh sách có thể chưa sẵn sàng trên BFF.",
+    "noOrders": "Không có lệnh",
+    "cancel": "Hủy",
+    "colId": "ID",
+    "colMarket": "Thị trường",
+    "colSide": "Chiều",
+    "colType": "Loại",
+    "colSize": "Khối lượng",
+    "colPrice": "Giá",
+    "colStatus": "Trạng thái",
+    "statusOpen": "Mở",
+    "statusFilled": "Đã khớp",
+    "statusCancelled": "Đã hủy",
+    "statusPending": "Chờ xử lý",
+    "statusPartiallyFilled": "Khớp một phần"
+  },
+  "portfolio": {
+    "title": "Danh mục",
+    "balances": "Số dư",
+    "positions": "Vị thế",
+    "locked": "Đã khóa {amount}",
+    "noBalanceData": "Không có dữ liệu số dư (có thể cần KYC)",
+    "noPositions": "Chưa có vị thế",
+    "colMarket": "Thị trường",
+    "colOutcome": "Kết quả",
+    "colSize": "Khối lượng",
+    "colAvg": "TB",
+    "colPnl": "PnL"
+  },
+  "compliance": {
+    "regionBlocked": "Truy cập từ khu vực của bạn không được phép.",
+    "learnMore": "Tìm hiểu thêm",
+    "kycRequiredTitle": "Yêu cầu xác minh KYC",
+    "kycRequiredBody": "Bạn có thể duyệt thị trường, nhưng giao dịch và thao tác quỹ bị vô hiệu cho đến khi KYC được phê duyệt."
+  }
+}

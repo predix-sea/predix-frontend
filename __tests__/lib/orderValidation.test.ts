@@ -5,7 +5,7 @@ describe('validateOrderForm', () => {
   it('rejects zero size', () => {
     const r = validateOrderForm({ size: '0', price: '0.5', type: 'LIMIT' });
     expect(r.valid).toBe(false);
-    expect(r.errors[0]).toContain('Size');
+    expect(r.errors[0]).toBe('trading.validation.sizeGtZero');
   });
 
   it('requires price for limit orders', () => {

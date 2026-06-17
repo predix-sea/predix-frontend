@@ -1,9 +1,14 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { ComplianceBanner } from '@/components/compliance/ComplianceBanner';
 import { useAuthStore } from '@/stores/authStore';
+import { useLocaleStore } from '@/stores/localeStore';
 
 describe('ComplianceBanner', () => {
+  beforeEach(() => {
+    useLocaleStore.setState({ locale: 'en' });
+  });
+
   it('shows KYC message when required', () => {
     useAuthStore.setState({
       compliance: 'KYC_REQUIRED',

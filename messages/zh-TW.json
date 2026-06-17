@@ -1,0 +1,146 @@
+{
+  "nav": {
+    "markets": "市場",
+    "portfolio": "投資組合",
+    "orders": "訂單"
+  },
+  "header": {
+    "connect": "連接錢包",
+    "kycRequired": "需要 KYC",
+    "settings": "設定"
+  },
+  "markets": {
+    "title": "市場",
+    "subtitle": "交易東南亞真實世界事件結果",
+    "searchPlaceholder": "搜尋市場…",
+    "allStatuses": "全部狀態",
+    "noMarkets": "找不到市場",
+    "loadError": "載入市場失敗，請確保 BFF 正在運行。",
+    "categoryTabsAria": "市場分類"
+  },
+  "status": {
+    "open": "開放",
+    "closed": "已關閉",
+    "resolved": "已結算",
+    "paused": "已暫停"
+  },
+  "categories": {
+    "trending": "熱門",
+    "crypto": "加密",
+    "macro": "總經",
+    "sports": "體育",
+    "politics": "政治",
+    "environment": "環境"
+  },
+  "common": {
+    "loading": "載入中…",
+    "language": "語言",
+    "dismiss": "關閉"
+  },
+  "settings": {
+    "title": "設定",
+    "language": "語言",
+    "languageHint": "語言變更將立即套用至整個應用程式。"
+  },
+  "login": {
+    "title": "連接錢包",
+    "subtitle": "透過 MetaMask 使用以太坊登入（SIWE）。您的私鑰不會離開錢包。",
+    "connectMetaMask": "連接 MetaMask",
+    "signingIn": "正在登入…",
+    "step1": "向 PrediX BFF 請求 nonce",
+    "step2": "在錢包中簽署 SIWE 訊息",
+    "step3": "驗證簽章並取得工作階段權杖"
+  },
+  "trading": {
+    "marketNotFound": "找不到市場",
+    "buyYes": "買入 Yes",
+    "buyNo": "買入 No",
+    "volume": "成交量",
+    "ends": "截止",
+    "yes": "Yes",
+    "no": "No",
+    "buy": "買入",
+    "sell": "賣出",
+    "limit": "限價",
+    "market": "市價",
+    "change24h": "24 小時漲跌",
+    "demo": "（示範）",
+    "tabChart": "圖表",
+    "tabOrderBook": "訂單簿",
+    "tabActivity": "成交記錄",
+    "noRecentTrades": "暫無成交記錄，成為該市場首位交易者。",
+    "sharesUnit": "份",
+    "demoActivity": "示範成交記錄 — 市場活躍後將顯示即時成交。",
+    "bestBid": "最高買價",
+    "bestAsk": "最低賣價",
+    "spread": "價差",
+    "priceCents": "價格 (¢)",
+    "sharesCol": "數量",
+    "totalUsd": "總額 ($)",
+    "loadOrderBookError": "載入訂單簿失敗",
+    "orderBookEmpty": "訂單簿為空",
+    "orderBookEmptyHint": "提交首筆訂單以開始交易。",
+    "mockOrderBook": "開發模擬訂單簿 — BFF 可用時將啟用即時資料。",
+    "lastTrade": "最新成交",
+    "unableLoadPriceHistory": "無法載入價格歷史",
+    "noPriceData": "此時間範圍暫無價格資料",
+    "demoPriceHistory": "示範價格歷史 — API 可用後將顯示即時 K 線。",
+    "placeOrder": "下單",
+    "outcome": "結果",
+    "sizeShares": "數量（份）",
+    "priceRange": "價格 (0–1)",
+    "selectOutcome": "請選擇結果",
+    "orderSubmitted": "訂單提交成功",
+    "submitting": "提交中…",
+    "submitOrder": "提交訂單",
+    "tradingDisabled": "交易已停用",
+    "connectToTrade": "連接錢包",
+    "connectToTradeSuffix": "即可交易",
+    "marketOrderAbbr": "市價",
+    "validation": {
+      "sizeGtZero": "數量必須大於 0",
+      "sizeDecimals": "數量最多支援 6 位小數",
+      "limitPriceGtZero": "限價必須大於 0",
+      "priceRange": "預測份額價格必須在 0 到 1 之間",
+      "priceDecimals": "價格最多支援 4 位小數"
+    }
+  },
+  "orders": {
+    "title": "訂單",
+    "allStatuses": "全部狀態",
+    "loadError": "載入訂單失敗，BFF 列表介面可能尚未就緒。",
+    "noOrders": "暫無訂單",
+    "cancel": "取消",
+    "colId": "ID",
+    "colMarket": "市場",
+    "colSide": "方向",
+    "colType": "類型",
+    "colSize": "數量",
+    "colPrice": "價格",
+    "colStatus": "狀態",
+    "statusOpen": "未成交",
+    "statusFilled": "已成交",
+    "statusCancelled": "已取消",
+    "statusPending": "待處理",
+    "statusPartiallyFilled": "部分成交"
+  },
+  "portfolio": {
+    "title": "投資組合",
+    "balances": "餘額",
+    "positions": "持倉",
+    "locked": "凍結 {amount}",
+    "noBalanceData": "暫無餘額資料（可能需要 KYC）",
+    "noPositions": "暫無持倉",
+    "colMarket": "市場",
+    "colOutcome": "結果",
+    "colSize": "數量",
+    "colAvg": "均價",
+    "colPnl": "盈虧"
+  },
+  "compliance": {
+    "regionBlocked": "您所在地區不允許存取。",
+    "learnMore": "了解更多",
+    "kycRequiredTitle": "需要 KYC 驗證",
+    "kycRequiredBody": "您可以瀏覽市場，但在 KYC 通過前無法交易或進行資金操作。"
+  }
+}

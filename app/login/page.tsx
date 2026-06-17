@@ -1,12 +1,12 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useSiweLogin } from '@/hooks/useSiweLogin';
 import { useAuthStore } from '@/stores/authStore';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
+import { useTranslation } from '@/hooks/useTranslation';
 
 function LoginContent() {
   const { connectAndLogin, loading, error, clearError } = useSiweLogin();
@@ -14,6 +14,7 @@ function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get('redirect') ?? '/';
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -23,17 +24,15 @@ function LoginContent() {
 
   return (
     <div className="mx-auto max-w-md py-16">
-      <h1 className="text-2xl font-bold text-white">Connect Wallet</h1>
-      <p className="mt-2 text-predix-muted">
-        Sign in with Ethereum (SIWE) via MetaMask. Your keys never leave your wallet.
-      </p>
+      <h1 className="text-2xl font-bold text-text-primary">{t('login.title')}</h1>
+      <p className="mt-2 text-text-secondary">{t('login.subtitle')}</p>
 
-      <div className="mt-8 rounded-xl border border-predix-border bg-predix-surface p-6">
+      <div className="mt-8 rounded-xl border border-border bg-card p-6 shadow-card">
         {error && (
-          <div className="mb-4 rounded-md bg-predix-danger/10 p-3 text-sm text-predix-danger">
+          <div className="mb-4 rounded-md bg-no/10 p-3 text-sm text-no">
             {error}
             <button type="button" className="ml-2 underline" onClick={clearError}>
-              Dismiss
+              {t('common.dismiss')}
             </button>
           </div>
         )}
@@ -42,22 +41,22 @@ function LoginContent() {
           type="button"
           onClick={() => void connectAndLogin()}
           disabled={loading}
-          className="flex w-full items-center justify-center gap-2 rounded-md bg-predix-accent py-3 text-sm font-semibold text-predix-bg disabled:opacity-50"
+          className="flex w-full items-center justify-center gap-2 rounded-md bg-brand-blue py-3 text-sm font-semibold text-white disabled:opacity-50"
         >
           {loading ? (
             <>
               <LoadingSpinner className="h-4 w-4" />
-              Signing in…
+              {t('login.signingIn')}
             </>
           ) : (
-            'Connect MetaMask'
+            t('login.connectMetaMask')
           )}
         </button>
 
-        <ol className="mt-6 space-y-2 text-xs text-predix-muted">
-          <li>1. Request nonce from PrediX BFF</li>
-          <li>2. Sign SIWE message in your wallet</li>
-          <li>3. Verify signature and receive session token</li>
+        <ol className="mt-6 space-y-2 text-xs text-text-secondary">
+          <li>1. {t('login.step1')}</li>
+          <li>2. {t('login.step2')}</li>
+          <li>3. {t('login.step3')}</li>
         </ol>
       </div>
     </div>
@@ -66,7 +65,13 @@ function LoginContent() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<LoadingSpinner />}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center py-20">
+          <LoadingSpinner />
+        </div>
+      }
+    >
       <LoginContent />
     </Suspense>
   );

@@ -36,6 +36,25 @@ export interface OrderBook {
   asks: OrderBookLevel[];
   lastTradePrice?: number;
   updatedAt?: string;
+  isMock?: boolean;
+}
+
+export type CandleInterval = '1h' | '1d';
+export type ChartRange = '1H' | '1D' | '1W' | 'ALL';
+export type ChartOutcome = 'YES' | 'NO';
+
+export interface Candle {
+  time: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+}
+
+export interface PriceHistory {
+  candles: Candle[];
+  isMock?: boolean;
 }
 
 export interface Trade {
