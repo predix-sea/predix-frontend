@@ -8,16 +8,14 @@ import {
   generateActivityFeed,
   formatRelativeTime,
 } from '@/lib/mockActivityFeed';
-import { useMounted } from '@/hooks/useMounted';
+import { ClientLiveText } from '@/components/ui/ClientLiveText';
 import { useTranslation } from '@/hooks/useTranslation';
 import { cn } from '@/lib/cn';
 import { getCategoryDotClass } from '@/lib/categoryStyles';
 
 export function ActivityFeedCard({ markets }: { markets: Market[] }) {
   const { t } = useTranslation();
-  const mounted = useMounted();
-  const nowMs = mounted ? Date.now() : ACTIVITY_FEED_ANCHOR_MS;
-  const items = useMemo(() => generateActivityFeed(markets, 6, nowMs), [markets, nowMs]);
+  const items = useMemo(() => generateActivityFeed(markets, 6, ACTIVITY_FEED_ANCHOR_MS), [markets]);
 
   return (
     <div className="rounded-xl border border-border bg-card p-4">
@@ -45,9 +43,12 @@ export function ActivityFeedCard({ markets }: { markets: Market[] }) {
                     <span className={cn('h-1.5 w-1.5 rounded-full', dotClass)} aria-hidden />
                     {categoryLabel}
                   </span>
-                  <span className="ml-auto text-[10px] tabular-nums text-text-secondary">
-                    {formatRelativeTime(item.timestamp, nowMs)}
-                  </span>
+                  <ClientLiveText
+                    className="ml-auto text-[10px] tabular-nums text-text-secondary"
+                    placeholder="—"
+                  >
+                    {() => formatRelativeTime(item.timestamp)}
+                  </ClientLiveText>
                 </div>
                 <p className="line-clamp-2 text-xs leading-snug text-text-primary group-hover:text-brand-blue">
                   {item.title}

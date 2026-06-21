@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { detectBrowserLocale, type SupportedLocale } from '@/lib/i18n/locales';
+import { DEFAULT_LOCALE, type SupportedLocale } from '@/lib/i18n/locales';
 
 interface LocaleState {
   locale: SupportedLocale;
@@ -10,11 +10,12 @@ interface LocaleState {
 export const useLocaleStore = create<LocaleState>()(
   persist(
     (set) => ({
-      locale: detectBrowserLocale(),
+      locale: DEFAULT_LOCALE,
       setLocale: (locale) => set({ locale }),
     }),
     {
       name: 'predix-locale',
+      skipHydration: true,
     },
   ),
 );

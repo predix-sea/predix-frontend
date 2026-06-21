@@ -16,7 +16,7 @@ export const useThemeStore = create<ThemeState>()(
       setTheme: (theme) => set({ theme }),
       toggleTheme: () => set({ theme: get().theme === 'dark' ? 'light' : 'dark' }),
     }),
-    { name: 'predix-theme' },
+    { name: 'predix-theme', skipHydration: true },
   ),
 );
 

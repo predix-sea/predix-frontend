@@ -57,11 +57,20 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'predix-auth',
+      skipHydration: true,
       partialize: (s) => ({
         accessToken: s.accessToken,
         walletAddress: s.walletAddress,
         chainId: s.chainId,
       }),
+      merge: (persisted, current) => {
+        const saved = persisted as Pick<AuthState, 'accessToken' | 'walletAddress' | 'chainId'>;
+        return {
+          ...current,
+          ...saved,
+          isAuthenticated: !!saved.accessToken,
+        };
+      },
     },
   ),
 );

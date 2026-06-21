@@ -19,6 +19,6 @@ export const useBookmarkStore = create<BookmarkState>()(
         })),
       isBookmarked: (marketId) => get().ids.includes(marketId),
     }),
-    { name: 'predix-bookmarks' },
+    { name: 'predix-bookmarks', skipHydration: true },
   ),
 );
