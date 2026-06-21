@@ -1,7 +1,7 @@
 'use client';
 
 import * as Popover from '@radix-ui/react-popover';
-import { SlidersHorizontal, Filter, Bookmark } from 'lucide-react';
+import { SlidersHorizontal, Filter, Bookmark, LayoutGrid, List } from 'lucide-react';
 import { useMarketFilterStore } from '@/stores/marketFilterStore';
 import { useTranslation } from '@/hooks/useTranslation';
 import { cn } from '@/lib/cn';
@@ -13,10 +13,12 @@ export function MarketFilters() {
     sort,
     timeRange,
     showBookmarksOnly,
+    viewMode,
     setStatus,
     setSort,
     setTimeRange,
     setShowBookmarksOnly,
+    setViewMode,
   } = useMarketFilterStore();
 
   const statusOptions = [
@@ -92,6 +94,36 @@ export function MarketFilters() {
           </Popover.Content>
         </Popover.Portal>
       </Popover.Root>
+
+      <button
+        type="button"
+        aria-label={t('filters.viewGrid')}
+        aria-pressed={viewMode === 'grid'}
+        onClick={() => setViewMode('grid')}
+        className={cn(
+          'rounded-lg border border-border p-2 transition',
+          viewMode === 'grid'
+            ? 'border-brand-blue/30 bg-brand-blue/10 text-brand-blue'
+            : 'text-text-secondary hover:bg-background hover:text-text-primary',
+        )}
+      >
+        <LayoutGrid className="h-4 w-4" />
+      </button>
+
+      <button
+        type="button"
+        aria-label={t('filters.viewList')}
+        aria-pressed={viewMode === 'list'}
+        onClick={() => setViewMode('list')}
+        className={cn(
+          'rounded-lg border border-border p-2 transition',
+          viewMode === 'list'
+            ? 'border-brand-blue/30 bg-brand-blue/10 text-brand-blue'
+            : 'text-text-secondary hover:bg-background hover:text-text-primary',
+        )}
+      >
+        <List className="h-4 w-4" />
+      </button>
 
       <button
         type="button"

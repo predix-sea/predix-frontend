@@ -10,6 +10,7 @@ import { formatCountdown, formatUsd } from '@/lib/format';
 import { getCategoryDotClass } from '@/lib/categoryStyles';
 import { getYesPrice } from '@/lib/marketPricing';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useTradeAuthGate } from '@/hooks/useTradeAuthGate';
 import { cn } from '@/lib/cn';
 
 function isYesNo(label: string): 'yes' | 'no' | null {
@@ -21,6 +22,7 @@ function isYesNo(label: string): 'yes' | 'no' | null {
 
 function YesNoButtons({ market, compact }: { market: Market; compact?: boolean }) {
   const { t } = useTranslation();
+  const { gateTradeNavigation } = useTradeAuthGate();
   const yes = market.outcomes.find((o) => isYesNo(o.label) === 'yes');
   const no = market.outcomes.find((o) => isYesNo(o.label) === 'no');
 
@@ -31,7 +33,7 @@ function YesNoButtons({ market, compact }: { market: Market; compact?: boolean }
       {yes && (
         <Link
           href={`/market/${market.id}?outcome=${yes.id}`}
-          onClick={(e) => e.stopPropagation()}
+          onClick={gateTradeNavigation}
           className={cn(
             'rounded-lg border border-yes/30 font-medium text-yes transition hover:bg-yes/10',
             compact ? 'px-2 py-1 text-xs' : 'px-3 py-1.5 text-sm',
@@ -43,7 +45,7 @@ function YesNoButtons({ market, compact }: { market: Market; compact?: boolean }
       {no && (
         <Link
           href={`/market/${market.id}?outcome=${no.id}`}
-          onClick={(e) => e.stopPropagation()}
+          onClick={gateTradeNavigation}
           className={cn(
             'rounded-lg border border-no/30 font-medium text-no transition hover:bg-no/10',
             compact ? 'px-2 py-1 text-xs' : 'px-3 py-1.5 text-sm',
@@ -58,6 +60,7 @@ function YesNoButtons({ market, compact }: { market: Market; compact?: boolean }
 
 function MultiOutcomeRows({ outcomes, marketId }: { outcomes: Outcome[]; marketId: string }) {
   const { t } = useTranslation();
+  const { gateTradeNavigation } = useTradeAuthGate();
   const visible = outcomes.slice(0, 3);
   const rest = outcomes.length - 3;
 
@@ -74,7 +77,7 @@ function MultiOutcomeRows({ outcomes, marketId }: { outcomes: Outcome[]; marketI
             {side && (
               <Link
                 href={`/market/${marketId}?outcome=${o.id}`}
-                onClick={(e) => e.stopPropagation()}
+                onClick={gateTradeNavigation}
                 className={cn(
                   'shrink-0 rounded-md border px-2 py-0.5 text-xs font-medium',
                   side === 'yes'

@@ -16,7 +16,94 @@
     "terms": "Terms of Use",
     "language": "Language",
     "menu": "Menu",
-    "disconnect": "Disconnect"
+    "disconnect": "Disconnect",
+    "howItWorks": "How it works"
+  },
+  "auth": {
+    "welcomeTitle": "Welcome to PrediX",
+    "walletSubtitle": "Connect a wallet to start trading",
+    "continueOkx": "Continue with OKX Wallet",
+    "continueMetaMask": "Continue with MetaMask",
+    "okxNotFound": "Please install OKX Wallet",
+    "metamaskNotFound": "Please install MetaMask",
+    "continueGoogle": "Continue with Google",
+    "or": "or",
+    "emailPlaceholder": "Email address",
+    "continue": "Continue",
+    "termsPrivacy": "By continuing you agree to our Terms of Use and Privacy Policy.",
+    "kycApproved": "KYC Verified",
+    "switchToLogin": "Already have an account? Log in",
+    "switchToSignup": "Don't have an account? Sign up",
+    "comingSoon": "Coming soon",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "kycTitle": "Verify your identity",
+    "kycSubtitle": "Complete KYC to trade and manage funds on PrediX.",
+    "startKyc": "Start KYC verification",
+    "continueBrowsing": "Continue browsing",
+    "completeKyc": "Complete KYC",
+    "kycLoginReminder": "Complete KYC verification to start trading.",
+    "stepWallet": "Wallet",
+    "stepKyc": "Verify",
+    "stepDone": "Done",
+    "accountCreated": "Account created",
+    "accountCreatedHint": "Your wallet is connected. KYC review is in progress — you can browse markets now.",
+    "startBrowsing": "Start browsing markets"
+  },
+  "kyc": {
+    "countryLabel": "Country / Region",
+    "selectCountry": "Select country",
+    "fullName": "Full name",
+    "fullNamePlaceholder": "As shown on ID",
+    "dateOfBirth": "Date of birth",
+    "idTypeLabel": "ID type",
+    "selectIdType": "Select ID type",
+    "uploadDocument": "Upload document",
+    "uploadHint": "Click to upload passport or ID (mock)",
+    "optional": "optional",
+    "tradeAfterVerify": "Complete verification to start trading",
+    "submitContinue": "Submit & continue",
+    "submitting": "Submitting…",
+    "submitSuccess": "KYC submitted successfully",
+    "submitError": "Failed to submit KYC. Please try again.",
+    "requiredFields": "Please fill in required fields",
+    "walletRequired": "Connect your wallet first",
+    "countries": {
+      "th": "Thailand",
+      "id": "Indonesia",
+      "ph": "Philippines",
+      "sg": "Singapore",
+      "my": "Malaysia",
+      "vn": "Vietnam",
+      "mm": "Myanmar",
+      "kh": "Cambodia",
+      "la": "Laos",
+      "bn": "Brunei",
+      "tl": "Timor-Leste"
+    },
+    "idTypes": {
+      "passport": "Passport",
+      "nationalId": "National ID",
+      "drivingLicense": "Driving license"
+    }
+  },
+  "howItWorks": {
+    "step1": {
+      "title": "1. Pick a prediction market",
+      "body": "Buy Yes or No shares on real-world outcomes. Prices move in real time as traders react to news across Southeast Asia."
+    },
+    "step2": {
+      "title": "2. Trade",
+      "body": "Fund your account with USDC, wallet, or card — then place trades instantly on any open market."
+    },
+    "step3": {
+      "title": "3. Redeem",
+      "body": "Sell shares anytime before resolution, or redeem winning shares for $1 each after the market settles.",
+      "terms": "Trading involves risk. See Terms for details."
+    },
+    "next": "Next",
+    "getStarted": "Get started",
+    "stepIndicator": "Step"
   },
   "header": {
     "connect": "Connect",
@@ -96,7 +183,23 @@
     "time7d": "7d",
     "time30d": "30d",
     "timeAll": "All",
-    "bookmarks": "Bookmarks"
+    "bookmarks": "Bookmarks",
+    "viewGrid": "Grid view",
+    "viewList": "List view"
+  },
+  "home": {
+    "newsletter": {
+      "title": "Get daily updates",
+      "subtitle": "SEA prediction market highlights in your inbox.",
+      "placeholder": "Enter your email",
+      "cta": "Subscribe",
+      "success": "You're subscribed! Check your inbox soon.",
+      "invalidEmail": "Please enter a valid email address"
+    },
+    "activity": {
+      "title": "Live updates from @PrediX",
+      "empty": "No activity yet"
+    }
   },
   "status": {
     "open": "OPEN",
@@ -173,6 +276,8 @@
     "orderSubmitted": "Order submitted successfully",
     "submitting": "Submitting…",
     "submitOrder": "Submit Order",
+    "signUpToTrade": "Sign up to trade",
+    "loginRequired": "Connect a wallet to place orders",
     "tradingDisabled": "Trading Disabled",
     "connectToTrade": "Connect wallet",
     "connectToTradeSuffix": "to trade",

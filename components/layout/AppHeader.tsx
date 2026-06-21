@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
+import { useUiStore } from '@/stores/uiStore';
 import { shortenAddress } from '@/lib/format';
 import { useTranslation } from '@/hooks/useTranslation';
 import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher';
@@ -11,6 +12,7 @@ import { cn } from '@/lib/cn';
 export function AppHeader() {
   const pathname = usePathname();
   const { isAuthenticated, walletAddress, compliance } = useAuthStore();
+  const openAuthModal = useUiStore((s) => s.openAuthModal);
   const { t } = useTranslation();
 
   const nav = [
@@ -70,12 +72,13 @@ export function AppHeader() {
               {shortenAddress(walletAddress)}
             </span>
           ) : (
-            <Link
-              href="/login"
+            <button
+              type="button"
+              onClick={() => openAuthModal('login')}
               className="rounded-md bg-brand-blue px-3 py-1.5 text-xs font-medium text-white transition hover:bg-brand-blue/90 sm:px-4 sm:text-sm"
             >
               {t('header.connect')}
-            </Link>
+            </button>
           )}
         </div>
       </div>

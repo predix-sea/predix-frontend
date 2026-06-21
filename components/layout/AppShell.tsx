@@ -6,6 +6,7 @@ import { cn } from '@/lib/cn';
 import { TopHeader } from './TopHeader';
 import { CategoryNav } from './CategoryNav';
 import { MobileNav } from './MobileNav';
+import { GlobalModals } from './GlobalModals';
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -28,6 +29,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         {children}
       </div>
       <MobileNav />
+      <GlobalModals />
     </>
   );
 }

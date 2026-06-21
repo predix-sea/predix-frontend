@@ -7,6 +7,7 @@ import { BookmarkButton } from '@/components/ui/BookmarkButton';
 import { formatCountdown, formatUsd } from '@/lib/format';
 import { getYesPrice } from '@/lib/marketPricing';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useTradeAuthGate } from '@/hooks/useTradeAuthGate';
 import { cn } from '@/lib/cn';
 
 export function FeatureMarketCard({
@@ -17,6 +18,7 @@ export function FeatureMarketCard({
   className?: string;
 }) {
   const { t } = useTranslation();
+  const { gateTradeNavigation } = useTradeAuthGate();
   const yesPrice = getYesPrice(market);
   const pct = yesPrice !== undefined ? Math.round(yesPrice * 100) : null;
 
@@ -68,7 +70,7 @@ export function FeatureMarketCard({
           {yes && (
             <Link
               href={`/market/${market.id}?outcome=${yes.id}`}
-              onClick={(e) => e.stopPropagation()}
+              onClick={gateTradeNavigation}
               className="rounded-lg border border-yes/50 bg-yes/20 px-4 py-2 text-sm font-semibold text-white backdrop-blur hover:bg-yes/30"
             >
               {t('market.yes')}
@@ -77,7 +79,7 @@ export function FeatureMarketCard({
           {no && (
             <Link
               href={`/market/${market.id}?outcome=${no.id}`}
-              onClick={(e) => e.stopPropagation()}
+              onClick={gateTradeNavigation}
               className="rounded-lg border border-no/50 bg-no/20 px-4 py-2 text-sm font-semibold text-white backdrop-blur hover:bg-no/30"
             >
               {t('market.no')}

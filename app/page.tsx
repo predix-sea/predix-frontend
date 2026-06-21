@@ -5,7 +5,9 @@ import { useSearchParams } from 'next/navigation';
 import { PanelLeft } from 'lucide-react';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { MarketGrid } from '@/components/market/MarketGrid';
+import { MarketList } from '@/components/market/MarketListRow';
 import { MarketFilters } from '@/components/market/MarketFilters';
+import { RightRail } from '@/components/home/RightRail';
 import { useMarkets } from '@/hooks/useMarkets';
 import { useMarketFilterStore } from '@/stores/marketFilterStore';
 import { useBookmarkStore } from '@/stores/bookmarkStore';
@@ -23,6 +25,7 @@ function MarketsContent() {
     query,
     sort,
     timeRange,
+    viewMode,
     showBookmarksOnly,
     sidebarOpen,
     setCategory,
@@ -77,6 +80,12 @@ function MarketsContent() {
   const catMeta = getCategoryByValue(category);
   const sectionTitle = catMeta ? t(catMeta.labelKey) : t('category.hot');
 
+  const marketContent = viewMode === 'list' ? (
+    <MarketList markets={displayed} loading={isLoading} />
+  ) : (
+    <MarketGrid markets={displayed} loading={isLoading} />
+  );
+
   return (
     <div className="mx-auto flex max-w-8xl">
       <Sidebar
@@ -87,36 +96,47 @@ function MarketsContent() {
       />
       <Sidebar markets={markets ?? []} />
 
-      <div className="min-w-0 flex-1 px-4 py-4 md:px-6 lg:px-8">
-        <div className="mb-4 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              aria-label="Open filters"
-              className="rounded-lg border border-border p-2 text-text-secondary lg:hidden"
-              onClick={() => setSidebarOpen(true)}
-            >
-              <PanelLeft className="h-4 w-4" />
-            </button>
-            <h1 className="text-2xl font-bold text-text-primary transition-opacity duration-150">
-              {sectionTitle}
-            </h1>
+      <div className="flex min-w-0 flex-1">
+        <div className="min-w-0 flex-1 px-4 py-4 md:px-6 lg:px-8">
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                aria-label="Open filters"
+                className="rounded-lg border border-border p-2 text-text-secondary lg:hidden"
+                onClick={() => setSidebarOpen(true)}
+              >
+                <PanelLeft className="h-4 w-4" />
+              </button>
+              <h1 className="text-2xl font-bold text-text-primary transition-opacity duration-150">
+                {sectionTitle}
+              </h1>
+            </div>
+            <MarketFilters />
           </div>
-          <MarketFilters />
+
+          {error && (
+            <p className="py-12 text-center text-no">{t('markets.loadError')}</p>
+          )}
+
+          {!error && (
+            <>
+              {marketContent}
+              {!isLoading && !displayed.length && (
+                <p className="py-12 text-center text-text-secondary">{t('markets.noMarkets')}</p>
+              )}
+            </>
+          )}
+
+          <div className="mt-6 xl:hidden">
+            <RightRail markets={markets ?? []} sticky={false} />
+          </div>
         </div>
 
-        {error && (
-          <p className="py-12 text-center text-no">{t('markets.loadError')}</p>
-        )}
-
-        {!error && (
-          <>
-            <MarketGrid markets={displayed} loading={isLoading} />
-            {!isLoading && !displayed.length && (
-              <p className="py-12 text-center text-text-secondary">{t('markets.noMarkets')}</p>
-            )}
-          </>
-        )}
+        <RightRail
+          markets={markets ?? []}
+          className="hidden w-[320px] shrink-0 px-4 py-4 xl:block"
+        />
       </div>
     </div>
   );

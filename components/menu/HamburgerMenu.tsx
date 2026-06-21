@@ -14,11 +14,13 @@ import {
   LogOut,
   Wallet,
   ListOrdered,
+  Play,
 } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useThemeStore } from '@/stores/themeStore';
 import { useAuthStore } from '@/stores/authStore';
+import { useUiStore } from '@/stores/uiStore';
 import { authService } from '@/services/authService';
 import { LanguageSubmenu } from './LanguageSubmenu';
 
@@ -32,6 +34,7 @@ export function HamburgerMenu({ mobile, open, onOpenChange }: HamburgerMenuProps
   const { t } = useTranslation();
   const { theme, setTheme } = useThemeStore();
   const { isAuthenticated, logout } = useAuthStore();
+  const { openHowItWorks, openAuthModal } = useUiStore();
   const [langOpen, setLangOpen] = useState(false);
   const [internalOpen, setInternalOpen] = useState(false);
 
@@ -73,6 +76,18 @@ export function HamburgerMenu({ mobile, open, onOpenChange }: HamburgerMenuProps
       onCloseAutoFocus={(e) => e.preventDefault()}
     >
       <div className="py-2">
+        <DropdownMenu.Item
+          className="mx-2 flex cursor-pointer items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-text-primary outline-none hover:bg-background focus:bg-background sm:hidden"
+          onSelect={(e) => {
+            e.preventDefault();
+            openHowItWorks();
+            setOpen(false);
+          }}
+        >
+          <Play className="h-4 w-4 text-brand-blue" aria-hidden />
+          {t('nav.howItWorks')}
+        </DropdownMenu.Item>
+
         {primaryItems.map(({ href, label, icon: Icon, color }) => (
           <DropdownMenu.Item key={href} asChild>
             <Link
@@ -102,6 +117,32 @@ export function HamburgerMenu({ mobile, open, onOpenChange }: HamburgerMenuProps
         </div>
 
         <DropdownMenu.Separator className="my-2 h-px bg-border" />
+
+        {!isAuthenticated && (
+          <>
+            <DropdownMenu.Item
+              className="mx-2 flex cursor-pointer items-center gap-3 rounded-lg px-4 py-2.5 text-sm text-brand-blue outline-none hover:bg-background"
+              onSelect={(e) => {
+                e.preventDefault();
+                openAuthModal('login');
+                setOpen(false);
+              }}
+            >
+              {t('nav.login')}
+            </DropdownMenu.Item>
+            <DropdownMenu.Item
+              className="mx-2 flex cursor-pointer items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-text-primary outline-none hover:bg-background"
+              onSelect={(e) => {
+                e.preventDefault();
+                openAuthModal('signup');
+                setOpen(false);
+              }}
+            >
+              {t('nav.signup')}
+            </DropdownMenu.Item>
+            <DropdownMenu.Separator className="my-2 h-px bg-border" />
+          </>
+        )}
 
         {isAuthenticated && (
           <>

@@ -87,6 +87,10 @@ body {
   .slide-in-from-top-2 {
     animation: slide-in-from-top-2 200ms ease-out;
   }
+
+  .auth-content-switch {
+    animation: auth-content-switch 150ms ease-out;
+  }
 }
 
 @keyframes animate-in {
@@ -113,6 +117,17 @@ body {
   from {
     opacity: 0;
     transform: translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes auth-content-switch {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
   }
   to {
     opacity: 1;

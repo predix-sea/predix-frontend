@@ -6,6 +6,7 @@ import { ComplianceBanner } from '@/components/compliance/ComplianceBanner';
 import { validateOrderForm } from '@/lib/orderValidation';
 import { canTrade } from '@/lib/compliance';
 import { useAuthStore } from '@/stores/authStore';
+import { useUiStore } from '@/stores/uiStore';
 import { useTradingStore } from '@/stores/tradingStore';
 import { usePlaceOrder } from '@/hooks/useOrders';
 import { mapApiError } from '@/services/bffClient';
@@ -61,14 +62,27 @@ export function OrderForm({ market, selectedOutcomeId, onOutcomeChange }: OrderF
   }, [limitPrice, bookSide]);
 
   const { compliance, user, isAuthenticated } = useAuthStore();
+  const openAuthModal = useUiStore((s) => s.openAuthModal);
   const kycApproved = user?.kycStatus === 'APPROVED';
-  const tradingAllowed = canTrade(compliance, !!kycApproved) && isAuthenticated;
+  const complianceAllowsTrade = canTrade(compliance, !!kycApproved);
+  const formLocked = isAuthenticated && !complianceAllowsTrade;
+  const tradingAllowed = isAuthenticated && complianceAllowsTrade;
 
   const placeOrder = usePlaceOrder();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError(null);
+
+    if (!isAuthenticated) {
+      openAuthModal('signup');
+      setFormError(t('trading.loginRequired'));
+      return;
+    }
+
+    if (!complianceAllowsTrade) {
+      return;
+    }
 
     const validation = validateOrderForm({ size, price, type });
     if (!validation.valid) {
@@ -97,6 +111,14 @@ export function OrderForm({ market, selectedOutcomeId, onOutcomeChange }: OrderF
     }
   };
 
+  const submitLabel = placeOrder.isPending
+    ? t('trading.submitting')
+    : !isAuthenticated
+      ? t('trading.signUpToTrade')
+      : tradingAllowed
+        ? t('trading.submitOrder')
+        : t('trading.tradingDisabled');
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -110,7 +132,7 @@ export function OrderForm({ market, selectedOutcomeId, onOutcomeChange }: OrderF
           <button
             key={s}
             type="button"
-            disabled={!tradingAllowed}
+            disabled={formLocked}
             onClick={() => setSide(s)}
             className={cn(
               'flex-1 rounded-md py-2 text-sm font-medium',
@@ -131,7 +153,7 @@ export function OrderForm({ market, selectedOutcomeId, onOutcomeChange }: OrderF
           <button
             key={orderType}
             type="button"
-            disabled={!tradingAllowed}
+            disabled={formLocked}
             onClick={() => setType(orderType)}
             className={cn(
               'flex-1 rounded-md py-1.5 text-xs font-medium',
@@ -150,7 +172,7 @@ export function OrderForm({ market, selectedOutcomeId, onOutcomeChange }: OrderF
         outcomes={market.outcomes}
         selectedId={outcomeId}
         onSelect={setOutcomeId}
-        disabled={!tradingAllowed}
+        disabled={formLocked}
       />
 
       <label className="mb-1 mt-4 block text-xs text-text-secondary">{t('trading.sizeShares')}</label>
@@ -160,7 +182,7 @@ export function OrderForm({ market, selectedOutcomeId, onOutcomeChange }: OrderF
         min="0"
         value={size}
         onChange={(e) => setSize(e.target.value)}
-        disabled={!tradingAllowed}
+        disabled={formLocked}
         className="mb-3 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-text-primary"
         placeholder="0.00"
       />
@@ -175,7 +197,7 @@ export function OrderForm({ market, selectedOutcomeId, onOutcomeChange }: OrderF
             max="1"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
-            disabled={!tradingAllowed}
+            disabled={formLocked}
             className="mb-3 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-text-primary"
             placeholder="0.50"
           />
@@ -192,24 +214,11 @@ export function OrderForm({ market, selectedOutcomeId, onOutcomeChange }: OrderF
 
       <button
         type="submit"
-        disabled={!tradingAllowed || placeOrder.isPending}
+        disabled={(isAuthenticated && !tradingAllowed) || placeOrder.isPending}
         className="w-full rounded-md bg-brand-blue py-2.5 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {placeOrder.isPending
-          ? t('trading.submitting')
-          : tradingAllowed
-            ? t('trading.submitOrder')
-            : t('trading.tradingDisabled')}
+        {submitLabel}
       </button>
-
-      {!isAuthenticated && (
-        <p className="mt-2 text-center text-xs text-text-secondary">
-          <a href="/login" className="text-brand-blue underline">
-            {t('trading.connectToTrade')}
-          </a>{' '}
-          {t('trading.connectToTradeSuffix')}
-        </p>
-      )}
     </form>
   );
 }

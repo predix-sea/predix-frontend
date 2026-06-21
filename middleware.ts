@@ -1,13 +1,20 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-/** Public routes that skip auth redirect */
-const PUBLIC = ['/login', '/compliance-blocked', '/api'];
+/** Routes that never require auth (browse-first; no login redirect in middleware). */
+function isPublicPath(pathname: string): boolean {
+  if (pathname === '/') return true;
+  return (
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/compliance-blocked') ||
+    pathname.startsWith('/api')
+  );
+}
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (PUBLIC.some((p) => pathname.startsWith(p))) {
+  if (isPublicPath(pathname)) {
     return NextResponse.next();
   }
 

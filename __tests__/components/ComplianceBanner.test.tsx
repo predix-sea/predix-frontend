@@ -11,6 +11,7 @@ describe('ComplianceBanner', () => {
 
   it('shows KYC message when required', () => {
     useAuthStore.setState({
+      isAuthenticated: true,
       compliance: 'KYC_REQUIRED',
       user: { walletAddress: '0x1', chainId: 1, kycStatus: 'PENDING' },
     });
@@ -21,6 +22,7 @@ describe('ComplianceBanner', () => {
 
   it('renders nothing when OK and KYC approved', () => {
     useAuthStore.setState({
+      isAuthenticated: true,
       compliance: 'OK',
       user: { walletAddress: '0x1', chainId: 1, kycStatus: 'APPROVED' },
     });

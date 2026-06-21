@@ -4,24 +4,15 @@ import { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
 
-const PUBLIC_PATHS = ['/login', '/compliance-blocked'];
-
+/** Only enforce compliance routing — browsing does not require login. */
 export function useAuthGuard() {
   const pathname = usePathname();
   const router = useRouter();
-  const { isAuthenticated, compliance } = useAuthStore();
+  const { compliance } = useAuthStore();
 
   useEffect(() => {
-    if (compliance === 'CN_BLOCKED') {
-      if (pathname !== '/compliance-blocked') {
-        router.replace('/compliance-blocked');
-      }
-      return;
+    if (compliance === 'CN_BLOCKED' && pathname !== '/compliance-blocked') {
+      router.replace('/compliance-blocked');
     }
-
-    const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p));
-    if (!isPublic && !isAuthenticated) {
-      router.replace(`/login?redirect=${encodeURIComponent(pathname)}`);
-    }
-  }, [compliance, isAuthenticated, pathname, router]);
+  }, [compliance, pathname, router]);
 }

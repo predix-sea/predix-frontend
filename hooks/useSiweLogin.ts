@@ -1,86 +1,82 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import { BrowserProvider } from 'ethers';
-import { authService } from '@/services/authService';
 import { mapApiError } from '@/services/bffClient';
+import { getMetaMaskProvider } from '@/lib/walletProviders';
+import { runSiweLogin } from '@/lib/runSiweLogin';
 import { useAuthStore } from '@/stores/authStore';
 import { trackEvent } from '@/lib/analytics';
-import type { ApiError } from '@/types';
+import { OkxWalletNotFoundError, useOkxSiweLogin } from '@/hooks/useOkxSiweLogin';
 
-const DEFAULT_CHAIN_ID = Number(process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID ?? 1);
+export type WalletLoginTarget = 'metamask' | 'okx';
+
+export class MetaMaskNotFoundError extends Error {
+  constructor() {
+    super('MetaMask not found');
+    this.name = 'MetaMaskNotFoundError';
+  }
+}
 
 export function useSiweLogin() {
   const [loading, setLoading] = useState(false);
+  const [activeWallet, setActiveWallet] = useState<WalletLoginTarget | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const { setToken, setWallet, setUser } = useAuthStore();
+  const { connectOkx: connectOkxWallet } = useOkxSiweLogin();
 
-  const connectAndLogin = useCallback(async () => {
-    setLoading(true);
-    setError(null);
+  const runWalletLogin = useCallback(
+    async (target: WalletLoginTarget, connect: () => Promise<void>) => {
+      setLoading(true);
+      setActiveWallet(target);
+      setError(null);
 
-    try {
-      if (!window.ethereum) {
-        throw new Error('MetaMask not detected. Please install a Web3 wallet.');
-      }
-
-      const provider = new BrowserProvider(window.ethereum);
-      await provider.send('eth_requestAccounts', []);
-      const signer = await provider.getSigner();
-      const address = await signer.getAddress();
-      const network = await provider.getNetwork();
-      const chainId = Number(network.chainId);
-
-      setWallet(address, chainId);
-
-      const nonceRes = await authService.getNonce(address);
-      const message = nonceRes.message;
-
-      let signature: string;
       try {
-        signature = await signer.signMessage(message);
-      } catch {
-        throw { code: 'AUTH_INVALID_SIGNATURE', message: 'Signature rejected' } satisfies ApiError;
+        await connect();
+      } catch (err) {
+        if (err instanceof MetaMaskNotFoundError || err instanceof OkxWalletNotFoundError) {
+          throw err;
+        }
+
+        const apiErr = mapApiError(err);
+        const msg =
+          apiErr.code === 'AUTH_NONCE_EXPIRED'
+            ? 'Login session expired. Please try again.'
+            : apiErr.code === 'AUTH_INVALID_SIGNATURE'
+              ? 'Invalid signature or rejected by wallet.'
+              : apiErr.message;
+
+        setError(msg);
+        trackEvent('login_failed', { code: apiErr.code });
+        throw err;
+      } finally {
+        setLoading(false);
+        setActiveWallet(null);
       }
+    },
+    [],
+  );
 
-      const tokenRes = await authService.verify({
-        walletAddress: address,
-        message,
-        signature,
-        chainId: chainId || DEFAULT_CHAIN_ID,
-      });
-
-      setToken(tokenRes.accessToken);
-
-      const me = await authService.me();
-      setUser(me);
-
-      trackEvent('login_success', { wallet: address });
-    } catch (err) {
-      const apiErr = mapApiError(err);
-      const msg =
-        apiErr.code === 'AUTH_NONCE_EXPIRED'
-          ? 'Login session expired. Please try again.'
-          : apiErr.code === 'AUTH_INVALID_SIGNATURE'
-            ? 'Invalid signature or rejected by wallet.'
-            : apiErr.message;
-
-      setError(msg);
-      trackEvent('login_failed', { code: apiErr.code });
-      throw err;
-    } finally {
-      setLoading(false);
+  const connectMetaMask = useCallback(async () => {
+    const provider = getMetaMaskProvider();
+    if (!provider) {
+      throw new MetaMaskNotFoundError();
     }
-  }, [setToken, setWallet, setUser]);
 
-  return { connectAndLogin, loading, error, clearError: () => setError(null) };
-}
+    const { setToken, setWallet, setUser } = useAuthStore.getState();
+    await runWalletLogin('metamask', () =>
+      runSiweLogin(provider, { setToken, setWallet, setUser }),
+    );
+  }, [runWalletLogin]);
 
-declare global {
-  interface Window {
-    ethereum?: {
-      request: (args: { method: string; params?: unknown[] }) => Promise<unknown>;
-      isMetaMask?: boolean;
-    };
-  }
+  const connectOkx = useCallback(async () => {
+    await runWalletLogin('okx', connectOkxWallet);
+  }, [connectOkxWallet, runWalletLogin]);
+
+  return {
+    connectMetaMask,
+    connectOkx,
+    loading,
+    activeWallet,
+    error,
+    clearError: () => setError(null),
+  };
 }

@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { PositionTable } from '@/components/portfolio/PositionTable';
+import { ComplianceBanner } from '@/components/compliance/ComplianceBanner';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { useMarkets } from '@/hooks/useMarkets';
 import { portfolioService } from '@/services/portfolioService';
@@ -32,6 +33,10 @@ export default function PortfolioPage() {
   return (
     <div>
       <h1 className="mb-6 text-2xl font-bold text-white">{t('portfolio.title')}</h1>
+
+      <div className="mb-6">
+        <ComplianceBanner />
+      </div>
 
       <section className="mb-8">
         <h2 className="mb-3 text-sm font-medium text-predix-muted">{t('portfolio.balances')}</h2>

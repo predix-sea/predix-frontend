@@ -3,8 +3,6 @@ import { persist } from 'zustand/middleware';
 import type { ComplianceState } from '@/lib/compliance';
 import type { MeResponse } from '@/types';
 
-const TOKEN_KEY = 'predix_access_token';
-
 interface AuthState {
   accessToken: string | null;
   walletAddress: string | null;
@@ -12,10 +10,13 @@ interface AuthState {
   user: MeResponse | null;
   isAuthenticated: boolean;
   compliance: ComplianceState;
+  registerKycSubmitted: boolean;
   setToken: (token: string | null) => void;
   setWallet: (address: string | null, chainId: number | null) => void;
   setUser: (user: MeResponse | null) => void;
   setCompliance: (state: ComplianceState) => void;
+  setRegisterKycSubmitted: (value: boolean) => void;
+  setUserKycStatus: (status: MeResponse['kycStatus']) => void;
   logout: () => void;
 }
 
@@ -28,6 +29,7 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       isAuthenticated: false,
       compliance: 'OK',
+      registerKycSubmitted: false,
       setToken: (token) =>
         set({
           accessToken: token,
@@ -36,6 +38,12 @@ export const useAuthStore = create<AuthState>()(
       setWallet: (address, chainId) => set({ walletAddress: address, chainId }),
       setUser: (user) => set({ user }),
       setCompliance: (compliance) => set({ compliance }),
+      setRegisterKycSubmitted: (registerKycSubmitted) => set({ registerKycSubmitted }),
+      setUserKycStatus: (kycStatus) =>
+        set((s) => ({
+          user: s.user ? { ...s.user, kycStatus } : s.user,
+          compliance: kycStatus === 'APPROVED' ? 'OK' : 'KYC_REQUIRED',
+        })),
       logout: () =>
         set({
           accessToken: null,
@@ -44,6 +52,7 @@ export const useAuthStore = create<AuthState>()(
           user: null,
           isAuthenticated: false,
           compliance: 'OK',
+          registerKycSubmitted: false,
         }),
     }),
     {

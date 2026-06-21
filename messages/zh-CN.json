@@ -16,7 +16,94 @@
     "terms": "使用条款",
     "language": "语言",
     "menu": "菜单",
-    "disconnect": "断开连接"
+    "disconnect": "断开连接",
+    "howItWorks": "玩法介绍"
+  },
+  "auth": {
+    "welcomeTitle": "欢迎来到 PrediX",
+    "walletSubtitle": "连接钱包以开始交易",
+    "continueOkx": "使用 OKX 钱包继续",
+    "continueMetaMask": "使用 MetaMask 继续",
+    "okxNotFound": "请安装 OKX 钱包",
+    "metamaskNotFound": "请安装 MetaMask 钱包",
+    "continueGoogle": "用 Google 账号继续",
+    "or": "或者",
+    "emailPlaceholder": "电子邮箱地址",
+    "continue": "继续",
+    "termsPrivacy": "继续即表示您同意我们的使用条款和隐私政策。",
+    "kycApproved": "KYC 已验证",
+    "switchToLogin": "已有账号？登陆",
+    "switchToSignup": "没有账号？注册",
+    "comingSoon": "即将推出",
+    "terms": "条款",
+    "privacy": "隐私",
+    "kycTitle": "验证您的身份",
+    "kycSubtitle": "完成 KYC 后即可在 PrediX 交易与管理资金。",
+    "startKyc": "开始 KYC 验证",
+    "continueBrowsing": "继续浏览",
+    "completeKyc": "完成 KYC",
+    "kycLoginReminder": "请完成 KYC 验证后即可开始交易。",
+    "stepWallet": "钱包",
+    "stepKyc": "验证",
+    "stepDone": "完成",
+    "accountCreated": "账号已创建",
+    "accountCreatedHint": "钱包已连接，KYC 审核进行中，您现在可以浏览市场。",
+    "startBrowsing": "开始浏览市场"
+  },
+  "kyc": {
+    "countryLabel": "居住国家/地区",
+    "selectCountry": "选择国家",
+    "fullName": "姓名",
+    "fullNamePlaceholder": "与证件一致",
+    "dateOfBirth": "出生日期",
+    "idTypeLabel": "证件类型",
+    "selectIdType": "选择证件类型",
+    "uploadDocument": "上传证件",
+    "uploadHint": "点击上传护照或身份证（演示）",
+    "optional": "可选",
+    "tradeAfterVerify": "完成验证后即可交易",
+    "submitContinue": "提交并继续",
+    "submitting": "提交中…",
+    "submitSuccess": "KYC 提交成功",
+    "submitError": "KYC 提交失败，请重试",
+    "requiredFields": "请填写必填项",
+    "walletRequired": "请先连接钱包",
+    "countries": {
+      "th": "泰国",
+      "id": "印尼",
+      "ph": "菲律宾",
+      "sg": "新加坡",
+      "my": "马来西亚",
+      "vn": "越南",
+      "mm": "缅甸",
+      "kh": "柬埔寨",
+      "la": "老挝",
+      "bn": "文莱",
+      "tl": "东帝汶"
+    },
+    "idTypes": {
+      "passport": "护照",
+      "nationalId": "身份证",
+      "drivingLicense": "驾驶证"
+    }
+  },
+  "howItWorks": {
+    "step1": {
+      "title": "1. 选一个预测盘口",
+      "body": "买入 Yes 或 No 份额参与真实事件预测。赔率随市场交易者对东南亚新闻的反应实时变动。"
+    },
+    "step2": {
+      "title": "2. 交易",
+      "body": "充值后即可交易——支持 USDC、钱包或银行卡入金，即时下单任意开放市场。"
+    },
+    "step3": {
+      "title": "3. 兑付",
+      "body": "随时卖出锁定收益，或在封盘后以每份 $1 兑换获胜份额。",
+      "terms": "交易有风险，详见使用条款。"
+    },
+    "next": "下一页",
+    "getStarted": "立即开始",
+    "stepIndicator": "步骤"
   },
   "header": {
     "connect": "连接钱包",
@@ -96,7 +183,23 @@
     "time7d": "7d",
     "time30d": "30d",
     "timeAll": "全部",
-    "bookmarks": "书签"
+    "bookmarks": "书签",
+    "viewGrid": "网格视图",
+    "viewList": "列表视图"
+  },
+  "home": {
+    "newsletter": {
+      "title": "获取每日更新",
+      "subtitle": "东南亚预测市场精选动态，直达邮箱。",
+      "placeholder": "输入您的邮箱",
+      "cta": "获取更新",
+      "success": "订阅成功！请留意您的邮箱。",
+      "invalidEmail": "请输入有效的邮箱地址"
+    },
+    "activity": {
+      "title": "来自 @PrediX 的实时动态",
+      "empty": "暂无动态"
+    }
   },
   "status": {
     "open": "开放",
@@ -173,6 +276,8 @@
     "orderSubmitted": "订单提交成功",
     "submitting": "提交中…",
     "submitOrder": "提交订单",
+    "signUpToTrade": "注册后交易",
+    "loginRequired": "请连接钱包后再下单",
     "tradingDisabled": "交易已禁用",
     "connectToTrade": "连接钱包",
     "connectToTradeSuffix": "即可交易",
