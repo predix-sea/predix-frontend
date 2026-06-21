@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { OrderBookPanel } from './OrderBookPanel';
 import { PriceChart } from './PriceChart';
 import { formatCentsPrecise, getYesPrice } from '@/lib/marketPricing';
+import { ClientLiveText } from '@/components/ui/ClientLiveText';
 import { useTranslation } from '@/hooks/useTranslation';
 import { cn } from '@/lib/cn';
 import type { Market, OrderBook } from '@/types';
@@ -25,12 +26,31 @@ interface MockTrade {
   time: string;
 }
 
+const MOCK_TRADE_TIMES = [
+  '2025-06-01T14:00:00.000Z',
+  '2025-06-01T13:58:00.000Z',
+  '2025-06-01T13:56:00.000Z',
+] as const;
+
 function generateMockTrades(yesPrice: number): MockTrade[] {
-  const now = Date.now();
   return [
-    { id: 't1', side: 'BUY', outcome: 'Yes', price: yesPrice, size: 120, time: new Date(now - 120_000).toISOString() },
-    { id: 't2', side: 'SELL', outcome: 'Yes', price: yesPrice - 0.01, size: 45, time: new Date(now - 360_000).toISOString() },
-    { id: 't3', side: 'BUY', outcome: 'No', price: 1 - yesPrice, size: 80, time: new Date(now - 720_000).toISOString() },
+    { id: 't1', side: 'BUY', outcome: 'Yes', price: yesPrice, size: 120, time: MOCK_TRADE_TIMES[0] },
+    {
+      id: 't2',
+      side: 'SELL',
+      outcome: 'Yes',
+      price: yesPrice - 0.01,
+      size: 45,
+      time: MOCK_TRADE_TIMES[1],
+    },
+    {
+      id: 't3',
+      side: 'BUY',
+      outcome: 'No',
+      price: 1 - yesPrice,
+      size: 80,
+      time: MOCK_TRADE_TIMES[2],
+    },
   ];
 }
 
@@ -71,9 +91,14 @@ function ActivityPanel({ yesPrice, hasLiveData }: { yesPrice: number; hasLiveDat
               <span>
                 {trade.size} {t('trading.sharesUnit')}
               </span>
-              <span className="text-xs">
-                {new Date(trade.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </span>
+              <ClientLiveText className="text-xs" placeholder="--:--">
+                {() =>
+                  new Date(trade.time).toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })
+                }
+              </ClientLiveText>
             </div>
           </div>
         ))}

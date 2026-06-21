@@ -1,15 +1,23 @@
 'use client';
 
+import { useMemo } from 'react';
 import Link from 'next/link';
 import type { Market } from '@/types';
-import { generateActivityFeed, formatRelativeTime } from '@/lib/mockActivityFeed';
+import {
+  ACTIVITY_FEED_ANCHOR_MS,
+  generateActivityFeed,
+  formatRelativeTime,
+} from '@/lib/mockActivityFeed';
+import { useMounted } from '@/hooks/useMounted';
 import { useTranslation } from '@/hooks/useTranslation';
 import { cn } from '@/lib/cn';
 import { getCategoryDotClass } from '@/lib/categoryStyles';
 
 export function ActivityFeedCard({ markets }: { markets: Market[] }) {
   const { t } = useTranslation();
-  const items = generateActivityFeed(markets, 6);
+  const mounted = useMounted();
+  const nowMs = mounted ? Date.now() : ACTIVITY_FEED_ANCHOR_MS;
+  const items = useMemo(() => generateActivityFeed(markets, 6, nowMs), [markets, nowMs]);
 
   return (
     <div className="rounded-xl border border-border bg-card p-4">
@@ -38,7 +46,7 @@ export function ActivityFeedCard({ markets }: { markets: Market[] }) {
                     {categoryLabel}
                   </span>
                   <span className="ml-auto text-[10px] tabular-nums text-text-secondary">
-                    {formatRelativeTime(item.timestamp)}
+                    {formatRelativeTime(item.timestamp, nowMs)}
                   </span>
                 </div>
                 <p className="line-clamp-2 text-xs leading-snug text-text-primary group-hover:text-brand-blue">

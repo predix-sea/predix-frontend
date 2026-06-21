@@ -12,9 +12,9 @@ export function formatPercent(value: number | undefined): string {
   return `${(value * 100).toFixed(1)}%`;
 }
 
-export function formatCountdown(isoDate: string | undefined): string {
+export function formatCountdown(isoDate: string | undefined, nowMs = Date.now()): string {
   if (!isoDate) return '—';
-  const diff = new Date(isoDate).getTime() - Date.now();
+  const diff = new Date(isoDate).getTime() - nowMs;
   if (diff <= 0) return 'Ended';
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));

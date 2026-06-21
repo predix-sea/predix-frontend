@@ -2,6 +2,7 @@
 
 import { MarketStatusBadge } from '@/components/markets/MarketStatusBadge';
 import { getCategoryMeta } from '@/lib/marketCategories';
+import { ClientLiveText } from '@/components/ui/ClientLiveText';
 import { formatCountdown, formatUsd } from '@/lib/format';
 import { useTranslation } from '@/hooks/useTranslation';
 import type { Market } from '@/types';
@@ -36,7 +37,9 @@ export function MarketDetailHeader({ market }: { market: Market }) {
         </span>
         <span className="text-sm text-text-secondary">
           {t('trading.ends')}{' '}
-          <span className="font-medium text-text-primary">{formatCountdown(market.closesAt)}</span>
+          <ClientLiveText className="font-medium text-text-primary">
+            {() => formatCountdown(market.closesAt)}
+          </ClientLiveText>
         </span>
       </div>
 

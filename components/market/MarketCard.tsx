@@ -6,6 +6,7 @@ import type { Market, Outcome } from '@/types';
 import { Badge, statusToBadgeVariant } from '@/components/ui/Badge';
 import { BookmarkButton } from '@/components/ui/BookmarkButton';
 import { ProbabilityRing } from '@/components/market/ProbabilityRing';
+import { ClientLiveText } from '@/components/ui/ClientLiveText';
 import { formatCountdown, formatUsd } from '@/lib/format';
 import { getCategoryDotClass } from '@/lib/categoryStyles';
 import { getYesPrice } from '@/lib/marketPricing';
@@ -177,7 +178,9 @@ export function MarketCard({ market }: { market: Market }) {
         {market.closesAt && (
           <span className="tabular-nums">
             {t('market.ends')}{' '}
-            <span className="font-medium text-text-primary">{formatCountdown(market.closesAt)}</span>
+            <span className="font-medium text-text-primary">
+              <ClientLiveText>{() => formatCountdown(market.closesAt)}</ClientLiveText>
+            </span>
           </span>
         )}
         <BookmarkButton marketId={market.id} />

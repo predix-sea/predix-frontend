@@ -4,6 +4,7 @@ import Link from 'next/link';
 import type { Market } from '@/types';
 import { Badge, statusToBadgeVariant } from '@/components/ui/Badge';
 import { BookmarkButton } from '@/components/ui/BookmarkButton';
+import { ClientLiveText } from '@/components/ui/ClientLiveText';
 import { formatCountdown, formatUsd } from '@/lib/format';
 import { getYesPrice } from '@/lib/marketPricing';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -93,7 +94,8 @@ export function FeatureMarketCard({
           </span>
           {market.closesAt && (
             <span className="tabular-nums">
-              {t('market.ends')} {formatCountdown(market.closesAt)}
+              {t('market.ends')}{' '}
+              <ClientLiveText>{() => formatCountdown(market.closesAt)}</ClientLiveText>
             </span>
           )}
         </div>

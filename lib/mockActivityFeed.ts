@@ -24,8 +24,11 @@ function hashId(id: string): number {
   return h;
 }
 
-export function formatRelativeTime(timestamp: number): string {
-  const diff = Date.now() - timestamp;
+/** Stable anchor for SSR — activity timestamps are offsets from this instant. */
+export const ACTIVITY_FEED_ANCHOR_MS = 1_735_689_600_000;
+
+export function formatRelativeTime(timestamp: number, nowMs = Date.now()): string {
+  const diff = nowMs - timestamp;
   if (diff < 60_000) return 'just now';
   const mins = Math.floor(diff / 60_000);
   if (mins < 60) return `${mins}m`;
@@ -35,7 +38,11 @@ export function formatRelativeTime(timestamp: number): string {
   return `${days}d`;
 }
 
-export function generateActivityFeed(markets: Market[], count = 6): ActivityFeedItem[] {
+export function generateActivityFeed(
+  markets: Market[],
+  count = 6,
+  nowMs = ACTIVITY_FEED_ANCHOR_MS,
+): ActivityFeedItem[] {
   if (!markets.length) return [];
 
   const pool = [...markets].sort((a, b) => hashId(b.id) - hashId(a.id));
@@ -52,7 +59,7 @@ export function generateActivityFeed(markets: Market[], count = 6): ActivityFeed
       category: market.category ?? 'trending',
       categoryLabelKey: meta.labelKey,
       title: `${template}: ${market.title}`,
-      timestamp: Date.now() - minutesAgo * 60_000,
+      timestamp: nowMs - minutesAgo * 60_000,
     };
   });
 }
