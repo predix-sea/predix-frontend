@@ -5,8 +5,9 @@ import { useAuthStore } from '@/stores/authStore';
 import { useUiStore } from '@/stores/uiStore';
 import { canTrade } from '@/lib/compliance';
 import { useTranslation } from '@/hooks/useTranslation';
+import { cn } from '@/lib/cn';
 
-export function ComplianceBanner() {
+export function ComplianceBanner({ compact }: { compact?: boolean } = {}) {
   const { t } = useTranslation();
   const { compliance, user, isAuthenticated } = useAuthStore();
   const openAuthModalAtKyc = useUiStore((s) => s.openAuthModalAtKyc);
@@ -14,7 +15,12 @@ export function ComplianceBanner() {
 
   if (compliance === 'CN_BLOCKED') {
     return (
-      <div className="rounded-lg border border-predix-danger/50 bg-predix-danger/10 p-4 text-sm text-predix-danger">
+      <div
+        className={cn(
+          'rounded-lg border border-predix-danger/50 bg-predix-danger/10 text-predix-danger',
+          compact ? 'mb-2 p-2 text-xs' : 'p-4 text-sm',
+        )}
+      >
         {t('compliance.regionBlocked')}{' '}
         <Link href="/compliance-blocked" className="underline">
           {t('compliance.learnMore')}
@@ -29,13 +35,23 @@ export function ComplianceBanner() {
 
   if (!canTrade(compliance, !!kycApproved)) {
     return (
-      <div className="rounded-lg border border-predix-warning/50 bg-predix-warning/10 p-4 text-sm text-predix-warning">
+      <div
+        className={cn(
+          'rounded-lg border border-predix-warning/50 bg-predix-warning/10 text-predix-warning',
+          compact ? 'mb-2 p-2 text-xs' : 'p-4 text-sm',
+        )}
+      >
         <p className="font-medium">{t('compliance.kycRequiredTitle')}</p>
-        <p className="mt-1 text-predix-muted">{t('compliance.kycRequiredBody')}</p>
+        {!compact && (
+          <p className="mt-1 text-predix-muted">{t('compliance.kycRequiredBody')}</p>
+        )}
         <button
           type="button"
           onClick={openAuthModalAtKyc}
-          className="mt-3 rounded-lg bg-brand-blue px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-brand-blue/90"
+          className={cn(
+            'rounded-lg bg-brand-blue font-semibold text-white transition hover:bg-brand-blue/90',
+            compact ? 'mt-1.5 px-2 py-1 text-xs' : 'mt-3 px-3 py-1.5 text-xs',
+          )}
         >
           {t('auth.completeKyc')}
         </button>

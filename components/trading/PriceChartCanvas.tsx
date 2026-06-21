@@ -22,12 +22,12 @@ interface PriceChartCanvasProps {
 const OUTCOME_COLORS: Record<ChartOutcome, { line: string; top: string; bottom: string }> = {
   YES: {
     line: '#16a34a',
-    top: 'rgba(22, 163, 74, 0.35)',
+    top: 'rgba(22, 163, 74, 0.25)',
     bottom: 'rgba(22, 163, 74, 0.02)',
   },
   NO: {
     line: '#dc2626',
-    top: 'rgba(220, 38, 38, 0.35)',
+    top: 'rgba(220, 38, 38, 0.25)',
     bottom: 'rgba(220, 38, 38, 0.02)',
   },
 };
@@ -51,27 +51,27 @@ export default function PriceChartCanvas({
       width: container.clientWidth,
       height: container.clientHeight,
       layout: {
-        background: { type: ColorType.Solid, color: '#0f1419' },
-        textColor: '#8b9cb3',
+        background: { type: ColorType.Solid, color: '#ffffff' },
+        textColor: '#64748b',
         fontSize: 11,
       },
       grid: {
-        vertLines: { color: '#1e2a38' },
-        horzLines: { color: '#1e2a38' },
+        vertLines: { color: '#f1f5f9' },
+        horzLines: { color: '#f1f5f9' },
       },
       rightPriceScale: {
-        borderColor: '#1e2a38',
+        borderColor: '#e2e8f0',
         scaleMargins: { top: 0.12, bottom: 0.08 },
       },
       timeScale: {
-        borderColor: '#1e2a38',
+        borderColor: '#e2e8f0',
         timeVisible: true,
         secondsVisible: false,
       },
       crosshair: {
         mode: CrosshairMode.Magnet,
-        vertLine: { color: '#3b4a5c', labelBackgroundColor: '#1e2a38' },
-        horzLine: { color: '#3b4a5c', labelBackgroundColor: '#1e2a38' },
+        vertLine: { color: '#cbd5e1', labelBackgroundColor: '#334155' },
+        horzLine: { color: '#cbd5e1', labelBackgroundColor: '#334155' },
       },
       localization: {
         priceFormatter: (price: number) => `${(price * 100).toFixed(1)}¢`,

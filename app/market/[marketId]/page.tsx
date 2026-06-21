@@ -3,20 +3,12 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { MarketDetailHeader } from '@/components/trading/MarketDetailHeader';
-import { MarketDetailTabs } from '@/components/trading/MarketDetailTabs';
-import { ProbabilityHero } from '@/components/trading/ProbabilityHero';
-import { OrderForm } from '@/components/trading/OrderForm';
+import { MarketMainPanel } from '@/components/trading/MarketMainPanel';
+import { TradingPanel } from '@/components/trading/TradingPanel';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { useMarket, useOrderBook } from '@/hooks/useMarkets';
 import { useTranslation } from '@/hooks/useTranslation';
-import {
-  formatCents,
-  getNoOutcomeId,
-  getNoPrice,
-  getYesOutcomeId,
-  getYesPrice,
-} from '@/lib/marketPricing';
-import { cn } from '@/lib/cn';
+import { getYesOutcomeId } from '@/lib/marketPricing';
 
 export default function MarketDetailPage() {
   const { t } = useTranslation();
@@ -51,62 +43,32 @@ export default function MarketDetailPage() {
     return <p className="py-12 text-center text-no">{t('trading.marketNotFound')}</p>;
   }
 
-  const yesOutcomeId = getYesOutcomeId(market);
-  const noOutcomeId = getNoOutcomeId(market);
-  const yesPrice = getYesPrice(market, orderbook);
-  const noPrice = getNoPrice(market, orderbook);
-  const activeOutcomeId = selectedOutcomeId || yesOutcomeId || market.outcomes[0]?.id || '';
+  const activeOutcomeId = selectedOutcomeId || getYesOutcomeId(market) || market.outcomes[0]?.id || '';
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_320px] xl:grid-cols-[1fr_360px]">
-      <div className="flex flex-col gap-4">
-        <MarketDetailHeader market={market} />
-        <ProbabilityHero market={market} orderbook={orderbook} />
-        <MarketDetailTabs
-          market={market}
-          orderbook={orderbook}
-          isLoading={obLoading}
-          isError={obError}
-          error={obErrorDetail}
-        />
-      </div>
+    <div className="pb-36 lg:pb-0">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start">
+        <div className="min-w-0">
+          <MarketDetailHeader market={market} />
+          <MarketMainPanel
+            market={market}
+            orderbook={orderbook}
+            isLoading={obLoading}
+            isError={obError}
+            error={obErrorDetail}
+          />
+        </div>
 
-      <div className="flex flex-col gap-3 lg:sticky lg:top-[4.5rem] lg:self-start">
-        {yesOutcomeId && (
-          <button
-            type="button"
-            onClick={() => setSelectedOutcomeId(yesOutcomeId)}
-            className={cn(
-              'flex w-full items-center justify-between rounded-xl px-4 py-3.5 text-sm font-semibold text-white transition',
-              activeOutcomeId === yesOutcomeId
-                ? 'bg-yes ring-2 ring-yes/40 ring-offset-2 ring-offset-background'
-                : 'bg-yes hover:bg-yes/90',
-            )}
-          >
-            <span>{t('trading.buyYes')}</span>
-            <span className="font-mono">{formatCents(yesPrice)}</span>
-          </button>
-        )}
-        {noOutcomeId && (
-          <button
-            type="button"
-            onClick={() => setSelectedOutcomeId(noOutcomeId)}
-            className={cn(
-              'flex w-full items-center justify-between rounded-xl px-4 py-3.5 text-sm font-semibold text-white transition',
-              activeOutcomeId === noOutcomeId
-                ? 'bg-no ring-2 ring-no/40 ring-offset-2 ring-offset-background'
-                : 'bg-no hover:bg-no/90',
-            )}
-          >
-            <span>{t('trading.buyNo')}</span>
-            <span className="font-mono">{formatCents(noPrice)}</span>
-          </button>
-        )}
-        <OrderForm
-          market={market}
-          selectedOutcomeId={activeOutcomeId}
-          onOutcomeChange={setSelectedOutcomeId}
-        />
+        <div className="fixed inset-x-0 bottom-0 z-40 max-h-[85vh] overflow-y-auto border-t border-border bg-card p-3 shadow-[0_-4px_24px_rgb(0_0_0_/0.08)] lg:static lg:z-auto lg:max-h-none lg:overflow-visible lg:border-t-0 lg:bg-transparent lg:p-0 lg:shadow-none">
+          <div className="lg:sticky lg:top-[4.5rem]">
+            <TradingPanel
+              market={market}
+              orderbook={orderbook}
+              selectedOutcomeId={activeOutcomeId}
+              onOutcomeChange={setSelectedOutcomeId}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

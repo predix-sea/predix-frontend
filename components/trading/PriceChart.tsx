@@ -5,21 +5,22 @@ import { useMemo, useState } from 'react';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { usePriceHistory } from '@/hooks/usePriceHistory';
 import { filterCandlesByRange, rangeToInterval } from '@/lib/chartRange';
+import { formatCentsPrecise } from '@/lib/marketPricing';
 import { useTranslation } from '@/hooks/useTranslation';
 import { cn } from '@/lib/cn';
-import type { ChartOutcome, ChartRange } from '@/types';
+import type { ChartRange } from '@/types';
 
 const PriceChartCanvas = dynamic(() => import('./PriceChartCanvas'), {
   ssr: false,
   loading: () => (
-    <div className="flex h-[280px] items-center justify-center">
+    <div className="flex h-[260px] items-center justify-center">
       <LoadingSpinner />
     </div>
   ),
 });
 
 const RANGES: ChartRange[] = ['1H', '1D', '1W', 'ALL'];
-const OUTCOMES: ChartOutcome[] = ['YES', 'NO'];
+const MOCK_CHANGE_24H = 0.024;
 
 interface PriceChartProps {
   marketId: string;
@@ -29,12 +30,11 @@ interface PriceChartProps {
 export function PriceChart({ marketId, currentPrice }: PriceChartProps) {
   const { t } = useTranslation();
   const [range, setRange] = useState<ChartRange>('1W');
-  const [outcome, setOutcome] = useState<ChartOutcome>('YES');
   const interval = rangeToInterval(range);
 
   const { data, isLoading, isError } = usePriceHistory(marketId, {
     interval,
-    outcome,
+    outcome: 'YES',
     range,
   });
 
@@ -43,34 +43,25 @@ export function PriceChart({ marketId, currentPrice }: PriceChartProps) {
     [data?.candles, range],
   );
 
-  const displayPrice =
-    currentPrice !== undefined
-      ? outcome === 'NO'
-        ? 1 - currentPrice
-        : currentPrice
-      : candles[candles.length - 1]?.close;
+  const displayPrice = currentPrice ?? candles[candles.length - 1]?.close;
+  const change24h = MOCK_CHANGE_24H;
+  const isPositive = change24h >= 0;
 
   return (
-    <div>
-      <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex gap-1 rounded-lg border border-border bg-background p-1">
-          {OUTCOMES.map((o) => (
-            <button
-              key={o}
-              type="button"
-              onClick={() => setOutcome(o)}
-              className={cn(
-                'rounded-md px-3 py-1 text-xs font-medium transition',
-                outcome === o
-                  ? o === 'YES'
-                    ? 'bg-yes/15 text-yes'
-                    : 'bg-no/15 text-no'
-                  : 'text-text-secondary hover:text-text-primary',
-              )}
-            >
-              {o === 'YES' ? t('trading.yes') : t('trading.no')}
-            </button>
-          ))}
+    <div className="p-4 lg:px-5 lg:pt-5">
+      <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p className="font-mono text-3xl font-bold tabular-nums text-yes">
+            {formatCentsPrecise(displayPrice)}
+          </p>
+          <p className="mt-0.5 text-xs text-text-secondary">
+            {t('trading.change24h')}{' '}
+            <span className={cn('font-medium tabular-nums', isPositive ? 'text-yes' : 'text-no')}>
+              {isPositive ? '+' : ''}
+              {(change24h * 100).toFixed(1)}%
+            </span>{' '}
+            <span className="text-text-secondary/70">{t('trading.demo')}</span>
+          </p>
         </div>
 
         <div className="flex gap-1 rounded-lg border border-border bg-background p-1">
@@ -92,32 +83,28 @@ export function PriceChart({ marketId, currentPrice }: PriceChartProps) {
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-lg border border-[#1e2a38] bg-[#0f1419]">
+      <div className="overflow-hidden rounded-lg border border-border bg-white">
         {isLoading && (
-          <div className="flex h-[280px] items-center justify-center">
+          <div className="flex h-[260px] items-center justify-center">
             <LoadingSpinner />
           </div>
         )}
 
         {!isLoading && isError && (
-          <div className="flex h-[280px] flex-col items-center justify-center px-4 text-center">
+          <div className="flex h-[260px] flex-col items-center justify-center px-4 text-center">
             <p className="text-sm text-text-secondary">{t('trading.unableLoadPriceHistory')}</p>
           </div>
         )}
 
         {!isLoading && !isError && candles.length === 0 && (
-          <div className="flex h-[280px] flex-col items-center justify-center px-4 text-center">
+          <div className="flex h-[260px] flex-col items-center justify-center px-4 text-center">
             <p className="text-sm text-text-secondary">{t('trading.noPriceData')}</p>
           </div>
         )}
 
         {!isLoading && !isError && candles.length > 0 && (
-          <div className="h-[280px]">
-            <PriceChartCanvas
-              candles={candles}
-              currentPrice={displayPrice}
-              outcome={outcome}
-            />
+          <div className="h-[260px]">
+            <PriceChartCanvas candles={candles} currentPrice={displayPrice} outcome="YES" />
           </div>
         )}
       </div>
