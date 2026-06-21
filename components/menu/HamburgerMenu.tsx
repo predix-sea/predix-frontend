@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as Switch from '@radix-ui/react-switch';
@@ -37,9 +37,21 @@ export function HamburgerMenu({ mobile, open, onOpenChange }: HamburgerMenuProps
   const { openHowItWorks, openAuthModal } = useUiStore();
   const [langOpen, setLangOpen] = useState(false);
   const [internalOpen, setInternalOpen] = useState(false);
+  const langScrollRef = useRef<HTMLDivElement>(null);
 
   const isOpen = open ?? internalOpen;
   const setOpen = onOpenChange ?? setInternalOpen;
+
+  useEffect(() => {
+    if (langOpen && langScrollRef.current) {
+      langScrollRef.current.scrollTop = 0;
+    }
+  }, [langOpen]);
+
+  const handleOpenChange = (next: boolean) => {
+    if (!next) setLangOpen(false);
+    setOpen(next);
+  };
 
   const handleLogout = async () => {
     try {
@@ -70,149 +82,161 @@ export function HamburgerMenu({ mobile, open, onOpenChange }: HamburgerMenuProps
       align="end"
       sideOffset={8}
       className={cn(
-        'z-50 w-72 rounded-xl border border-border bg-card shadow-lg animate-in fade-in slide-in-from-top-2',
-        mobile && 'fixed inset-x-4 top-16 max-h-[calc(100vh-5rem)] overflow-y-auto',
+        'z-50 flex w-72 max-h-[min(85vh,640px)] flex-col overflow-hidden rounded-xl border border-border bg-card shadow-lg animate-in fade-in slide-in-from-top-2',
+        mobile && 'fixed inset-x-4 top-16 flex flex-col overflow-hidden',
       )}
       onCloseAutoFocus={(e) => e.preventDefault()}
     >
-      <div className="py-2">
-        <DropdownMenu.Item
-          className="mx-2 flex cursor-pointer items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-text-primary outline-none hover:bg-background focus:bg-background sm:hidden"
-          onSelect={(e) => {
-            e.preventDefault();
-            openHowItWorks();
-            setOpen(false);
-          }}
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+        <div
+          className={cn(
+            'scroll-contained scrollbar-thin py-2',
+            mobile ? 'min-h-0 flex-1' : 'max-h-[40vh] flex-shrink-0',
+          )}
         >
-          <Play className="h-4 w-4 text-brand-blue" aria-hidden />
-          {t('nav.howItWorks')}
-        </DropdownMenu.Item>
-
-        {primaryItems.map(({ href, label, icon: Icon, color }) => (
-          <DropdownMenu.Item key={href} asChild>
-            <Link
-              href={href}
-              className="mx-2 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-text-primary outline-none hover:bg-background focus:bg-background"
-              onClick={() => setOpen(false)}
-            >
-              <Icon className={cn('h-4 w-4', color)} aria-hidden />
-              {label}
-            </Link>
-          </DropdownMenu.Item>
-        ))}
-
-        <div className="mx-2 flex items-center justify-between rounded-lg px-4 py-3 hover:bg-background">
-          <div className="flex items-center gap-3 text-sm font-medium text-text-primary">
-            <Moon className="h-4 w-4 text-brand-blue" aria-hidden />
-            {t('nav.darkMode')}
-          </div>
-          <Switch.Root
-            checked={theme === 'dark'}
-            onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
-            className="relative h-5 w-9 rounded-full bg-border data-[state=checked]:bg-brand-blue"
-            aria-label={t('nav.darkMode')}
+          <DropdownMenu.Item
+            className="mx-2 flex cursor-pointer items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-text-primary outline-none hover:bg-background focus:bg-background sm:hidden"
+            onSelect={(e) => {
+              e.preventDefault();
+              openHowItWorks();
+              setOpen(false);
+            }}
           >
-            <Switch.Thumb className="block h-4 w-4 translate-x-0.5 rounded-full bg-card shadow transition-transform data-[state=checked]:translate-x-[18px]" />
-          </Switch.Root>
+            <Play className="h-4 w-4 text-brand-blue" aria-hidden />
+            {t('nav.howItWorks')}
+          </DropdownMenu.Item>
+
+          {primaryItems.map(({ href, label, icon: Icon, color }) => (
+            <DropdownMenu.Item key={href} asChild>
+              <Link
+                href={href}
+                className="mx-2 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-text-primary outline-none hover:bg-background focus:bg-background"
+                onClick={() => setOpen(false)}
+              >
+                <Icon className={cn('h-4 w-4', color)} aria-hidden />
+                {label}
+              </Link>
+            </DropdownMenu.Item>
+          ))}
+
+          <div className="mx-2 flex items-center justify-between rounded-lg px-4 py-3 hover:bg-background">
+            <div className="flex items-center gap-3 text-sm font-medium text-text-primary">
+              <Moon className="h-4 w-4 text-brand-blue" aria-hidden />
+              {t('nav.darkMode')}
+            </div>
+            <Switch.Root
+              checked={theme === 'dark'}
+              onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
+              className="relative h-5 w-9 rounded-full bg-border data-[state=checked]:bg-brand-blue"
+              aria-label={t('nav.darkMode')}
+            >
+              <Switch.Thumb className="block h-4 w-4 translate-x-0.5 rounded-full bg-card shadow transition-transform data-[state=checked]:translate-x-[18px]" />
+            </Switch.Root>
+          </div>
+
+          <DropdownMenu.Separator className="my-2 h-px bg-border" />
+
+          {!isAuthenticated && (
+            <>
+              <DropdownMenu.Item
+                className="mx-2 flex cursor-pointer items-center gap-3 rounded-lg px-4 py-2.5 text-sm text-brand-blue outline-none hover:bg-background"
+                onSelect={(e) => {
+                  e.preventDefault();
+                  openAuthModal('login');
+                  setOpen(false);
+                }}
+              >
+                {t('nav.login')}
+              </DropdownMenu.Item>
+              <DropdownMenu.Item
+                className="mx-2 flex cursor-pointer items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-text-primary outline-none hover:bg-background"
+                onSelect={(e) => {
+                  e.preventDefault();
+                  openAuthModal('signup');
+                  setOpen(false);
+                }}
+              >
+                {t('nav.signup')}
+              </DropdownMenu.Item>
+              <DropdownMenu.Separator className="my-2 h-px bg-border" />
+            </>
+          )}
+
+          {isAuthenticated && (
+            <>
+              <DropdownMenu.Item asChild>
+                <Link
+                  href="/portfolio"
+                  className="mx-2 flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm text-text-secondary outline-none hover:bg-background hover:text-text-primary"
+                  onClick={() => setOpen(false)}
+                >
+                  <Wallet className="h-4 w-4" aria-hidden />
+                  {t('nav.portfolio')}
+                </Link>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item asChild>
+                <Link
+                  href="/orders"
+                  className="mx-2 flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm text-text-secondary outline-none hover:bg-background hover:text-text-primary"
+                  onClick={() => setOpen(false)}
+                >
+                  <ListOrdered className="h-4 w-4" aria-hidden />
+                  {t('nav.orders')}
+                </Link>
+              </DropdownMenu.Item>
+              <DropdownMenu.Item
+                className="mx-2 flex cursor-pointer items-center gap-3 rounded-lg px-4 py-2.5 text-sm text-text-secondary outline-none hover:bg-background hover:text-no"
+                onSelect={(e) => {
+                  e.preventDefault();
+                  void handleLogout();
+                }}
+              >
+                <LogOut className="h-4 w-4" aria-hidden />
+                {t('nav.disconnect')}
+              </DropdownMenu.Item>
+              <DropdownMenu.Separator className="my-2 h-px bg-border" />
+            </>
+          )}
+
+          {secondaryItems.map(({ href, label }) => (
+            <DropdownMenu.Item key={href} asChild>
+              <Link
+                href={href}
+                className="mx-2 block rounded-lg px-4 py-2.5 text-sm text-text-secondary outline-none hover:bg-background hover:text-text-primary"
+                onClick={() => setOpen(false)}
+              >
+                {label}
+              </Link>
+            </DropdownMenu.Item>
+          ))}
         </div>
 
-        <DropdownMenu.Separator className="my-2 h-px bg-border" />
-
-        {!isAuthenticated && (
-          <>
-            <DropdownMenu.Item
-              className="mx-2 flex cursor-pointer items-center gap-3 rounded-lg px-4 py-2.5 text-sm text-brand-blue outline-none hover:bg-background"
-              onSelect={(e) => {
-                e.preventDefault();
-                openAuthModal('login');
-                setOpen(false);
-              }}
+        <div className="flex-shrink-0 border-t border-border pt-1">
+          <div className="mx-2">
+            <button
+              type="button"
+              className="flex w-full items-center justify-between rounded-lg px-4 py-2.5 text-sm text-text-secondary hover:bg-background hover:text-text-primary"
+              aria-expanded={langOpen}
+              onClick={() => setLangOpen((v) => !v)}
             >
-              {t('nav.login')}
-            </DropdownMenu.Item>
-            <DropdownMenu.Item
-              className="mx-2 flex cursor-pointer items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-text-primary outline-none hover:bg-background"
-              onSelect={(e) => {
-                e.preventDefault();
-                openAuthModal('signup');
-                setOpen(false);
-              }}
-            >
-              {t('nav.signup')}
-            </DropdownMenu.Item>
-            <DropdownMenu.Separator className="my-2 h-px bg-border" />
-          </>
-        )}
-
-        {isAuthenticated && (
-          <>
-            <DropdownMenu.Item asChild>
-              <Link
-                href="/portfolio"
-                className="mx-2 flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm text-text-secondary outline-none hover:bg-background hover:text-text-primary"
-                onClick={() => setOpen(false)}
-              >
-                <Wallet className="h-4 w-4" aria-hidden />
-                {t('nav.portfolio')}
-              </Link>
-            </DropdownMenu.Item>
-            <DropdownMenu.Item asChild>
-              <Link
-                href="/orders"
-                className="mx-2 flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm text-text-secondary outline-none hover:bg-background hover:text-text-primary"
-                onClick={() => setOpen(false)}
-              >
-                <ListOrdered className="h-4 w-4" aria-hidden />
-                {t('nav.orders')}
-              </Link>
-            </DropdownMenu.Item>
-            <DropdownMenu.Item
-              className="mx-2 flex cursor-pointer items-center gap-3 rounded-lg px-4 py-2.5 text-sm text-text-secondary outline-none hover:bg-background hover:text-no"
-              onSelect={(e) => {
-                e.preventDefault();
-                void handleLogout();
-              }}
-            >
-              <LogOut className="h-4 w-4" aria-hidden />
-              {t('nav.disconnect')}
-            </DropdownMenu.Item>
-            <DropdownMenu.Separator className="my-2 h-px bg-border" />
-          </>
-        )}
-
-        {secondaryItems.map(({ href, label }) => (
-          <DropdownMenu.Item key={href} asChild>
-            <Link
-              href={href}
-              className="mx-2 block rounded-lg px-4 py-2.5 text-sm text-text-secondary outline-none hover:bg-background hover:text-text-primary"
-              onClick={() => setOpen(false)}
-            >
-              {label}
-            </Link>
-          </DropdownMenu.Item>
-        ))}
-
-        <div className="mx-2">
-          <button
-            type="button"
-            className="flex w-full items-center justify-between rounded-lg px-4 py-2.5 text-sm text-text-secondary hover:bg-background hover:text-text-primary"
-            onClick={() => setLangOpen((v) => !v)}
-          >
-            {t('nav.language')}
-            {langOpen ? (
-              <ChevronDown className="h-4 w-4" aria-hidden />
-            ) : (
-              <ChevronRight className="h-4 w-4" aria-hidden />
+              {t('nav.language')}
+              {langOpen ? (
+                <ChevronDown className="h-4 w-4" aria-hidden />
+              ) : (
+                <ChevronRight className="h-4 w-4" aria-hidden />
+              )}
+            </button>
+            {langOpen && (
+              <LanguageSubmenu ref={langScrollRef} onSelect={() => setOpen(false)} />
             )}
-          </button>
-          {langOpen && <LanguageSubmenu onSelect={() => setOpen(false)} />}
+          </div>
         </div>
       </div>
     </DropdownMenu.Content>
   );
 
   return (
-    <DropdownMenu.Root open={isOpen} onOpenChange={setOpen}>
+    <DropdownMenu.Root open={isOpen} onOpenChange={handleOpenChange}>
       <DropdownMenu.Trigger asChild>
         <button
           type="button"

@@ -122,7 +122,7 @@ export function Sidebar({ markets, className, mobile, open, onOpenChange }: Side
         className,
       )}
     >
-      <div className="sticky top-[7.5rem] max-h-[calc(100vh-7.5rem)] overflow-y-auto py-4">
+      <div className="sticky top-[7.5rem] max-h-[calc(100vh-7.5rem)] scroll-contained py-4">
         <SidebarContent
           markets={markets}
           category={category}

@@ -101,7 +101,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
           id={listboxId}
           role="listbox"
           aria-label={t('common.language')}
-          className="absolute right-0 z-50 mt-1 min-w-[10.5rem] overflow-hidden rounded-lg border border-border bg-card py-1 shadow-card"
+          className="absolute right-0 z-50 mt-1 max-h-[min(280px,40vh)] min-w-[10.5rem] scroll-contained rounded-lg border border-border bg-card py-1 shadow-card"
         >
           {SUPPORTED_LOCALES.map((item) => {
             const selected = locale === item.code;

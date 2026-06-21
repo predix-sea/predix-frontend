@@ -95,7 +95,7 @@ export function AuthModal() {
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm data-[state=open]:animate-in data-[state=open]:fade-in" />
         <Dialog.Content className="fixed inset-0 z-[101] flex items-center justify-center p-4 outline-none">
-          <div className="relative max-h-[90vh] w-full max-w-[420px] overflow-y-auto rounded-2xl border border-border bg-card p-6 pt-10 shadow-xl animate-in fade-in slide-in-from-top-2">
+          <div className="relative max-h-[90vh] w-full max-w-[420px] scroll-contained rounded-2xl border border-border bg-card p-6 pt-10 shadow-xl animate-in fade-in slide-in-from-top-2">
             <Dialog.Close
               className="absolute right-4 top-4 z-10 rounded-lg p-1 text-text-secondary transition hover:bg-background hover:text-text-primary"
               aria-label={t('common.dismiss')}

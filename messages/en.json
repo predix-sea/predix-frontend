@@ -198,7 +198,9 @@
     },
     "activity": {
       "title": "Live updates from @PrediX",
-      "empty": "No activity yet"
+      "empty": "No activity yet",
+      "expand": "Show more",
+      "collapse": "Show less"
     }
   },
   "status": {

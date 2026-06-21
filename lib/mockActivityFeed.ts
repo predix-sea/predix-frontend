@@ -46,7 +46,7 @@ export function generateActivityFeed(
   if (!markets.length) return [];
 
   const pool = [...markets].sort((a, b) => hashId(b.id) - hashId(a.id));
-  const size = Math.min(Math.max(count, 5), 8, pool.length);
+  const size = Math.min(Math.max(count, 1), pool.length);
 
   return pool.slice(0, size).map((market, index) => {
     const meta = getCategoryMeta(market.category);

@@ -177,7 +177,7 @@ export function OrderBookPanel({
           total: t('trading.totalUsd'),
         }}
       />
-      <div className="max-h-80 overflow-y-auto">
+      <div className="max-h-80 scroll-contained">
         {depth.asks.map((row) => (
           <DepthRowButton
             key={`ask-${row.price}`}

@@ -45,15 +45,14 @@ export function SimpleWalletConnect() {
         <WalletButton
           label={t('auth.continueOkx')}
           icon={<AuthProviderIcon id="okx" className="h-full w-full" />}
-          iconWrapClassName="bg-black p-1.5"
+          iconWrapClassName="overflow-hidden rounded-md"
           onClick={handleOkx}
           loading={loading && activeWallet === 'okx'}
           disabled={loading && activeWallet !== 'okx'}
         />
         <WalletButton
           label={t('auth.continueMetaMask')}
-          icon={<AuthProviderIcon id="metamask" className="h-full w-full" />}
-          iconWrapClassName="bg-[#F6851B]/10 p-1"
+          icon={<AuthProviderIcon id="metamask" className="h-full w-full p-0.5" />}
           onClick={handleMetaMask}
           loading={loading && activeWallet === 'metamask'}
           disabled={loading && activeWallet !== 'metamask'}
@@ -98,7 +97,7 @@ function WalletButton({
     >
       <span
         className={cn(
-          'flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl',
+          'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-black/5',
           iconWrapClassName,
         )}
       >

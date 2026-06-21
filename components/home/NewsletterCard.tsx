@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import { useUiStore } from '@/stores/uiStore';
 import { useTranslation } from '@/hooks/useTranslation';
+import { cn } from '@/lib/cn';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function NewsletterCard() {
+export function NewsletterCard({ className }: { className?: string }) {
   const { t } = useTranslation();
   const setToast = useUiStore((s) => s.setToast);
   const [email, setEmail] = useState('');
@@ -24,7 +25,7 @@ export function NewsletterCard() {
   };
 
   return (
-    <div className="rounded-xl border border-border bg-card p-4">
+    <div className={cn('rounded-xl border border-border bg-card p-4', className)}>
       <h3 className="text-sm font-semibold text-text-primary">{t('home.newsletter.title')}</h3>
       <p className="mt-1 text-xs text-text-secondary">{t('home.newsletter.subtitle')}</p>
 

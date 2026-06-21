@@ -13,9 +13,17 @@ interface OutcomeSelectorProps {
 
 function outcomeStyle(label: string, selected: boolean): string {
   const lower = label.toLowerCase();
+  if (lower === 'yes') {
+    return selected
+      ? 'border-yes bg-yes/15 text-yes'
+      : 'border-yes/40 bg-yes/5 text-yes hover:border-yes hover:bg-yes/10';
+  }
+  if (lower === 'no') {
+    return selected
+      ? 'border-no bg-no/15 text-no'
+      : 'border-no/50 bg-no/5 text-no hover:border-no hover:bg-no/10';
+  }
   if (selected) {
-    if (lower === 'yes') return 'border-yes bg-yes/10 text-yes';
-    if (lower === 'no') return 'border-no bg-no/10 text-no';
     return 'border-brand-blue bg-brand-blue/10 text-brand-blue';
   }
   return 'border-border bg-background text-text-secondary hover:border-border';

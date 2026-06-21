@@ -32,4 +32,14 @@ describe('mockActivityFeed SSR stability', () => {
     const timestamp = ACTIVITY_FEED_ANCHOR_MS - 7 * 60_000;
     expect(formatRelativeTime(timestamp, ACTIVITY_FEED_ANCHOR_MS)).toBe('7m');
   });
+
+  it('generateActivityFeed supports count up to 12', () => {
+    const markets = Array.from({ length: 15 }, (_, i) => ({
+      ...sampleMarket,
+      id: `m${i}`,
+      title: `Market ${i}`,
+    }));
+    const feed = generateActivityFeed(markets, 12, ACTIVITY_FEED_ANCHOR_MS);
+    expect(feed).toHaveLength(12);
+  });
 });

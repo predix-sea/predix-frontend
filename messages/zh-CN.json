@@ -198,7 +198,9 @@
     },
     "activity": {
       "title": "来自 @PrediX 的实时动态",
-      "empty": "暂无动态"
+      "empty": "暂无动态",
+      "expand": "展开更多",
+      "collapse": "收起"
     }
   },
   "status": {

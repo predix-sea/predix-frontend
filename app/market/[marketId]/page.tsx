@@ -79,8 +79,8 @@ export default function MarketDetailPage() {
             className={cn(
               'flex w-full items-center justify-between rounded-xl px-4 py-3.5 text-sm font-semibold text-white transition',
               activeOutcomeId === yesOutcomeId
-                ? 'bg-yes ring-2 ring-yes/30 ring-offset-2 ring-offset-background'
-                : 'bg-yes/90 hover:bg-yes',
+                ? 'bg-yes ring-2 ring-yes/40 ring-offset-2 ring-offset-background'
+                : 'bg-yes hover:bg-yes/90',
             )}
           >
             <span>{t('trading.buyYes')}</span>
@@ -94,8 +94,8 @@ export default function MarketDetailPage() {
             className={cn(
               'flex w-full items-center justify-between rounded-xl px-4 py-3.5 text-sm font-semibold text-white transition',
               activeOutcomeId === noOutcomeId
-                ? 'bg-no ring-2 ring-no/30 ring-offset-2 ring-offset-background'
-                : 'bg-no/90 hover:bg-no',
+                ? 'bg-no ring-2 ring-no/40 ring-offset-2 ring-offset-background'
+                : 'bg-no hover:bg-no/90',
             )}
           >
             <span>{t('trading.buyNo')}</span>
