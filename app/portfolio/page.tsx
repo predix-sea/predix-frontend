@@ -2,13 +2,16 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { PositionTable } from '@/components/portfolio/PositionTable';
+import { ComplianceBanner } from '@/components/compliance/ComplianceBanner';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { useMarkets } from '@/hooks/useMarkets';
 import { portfolioService } from '@/services/portfolioService';
 import { useAuthStore } from '@/stores/authStore';
 import { formatUsd } from '@/lib/format';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function PortfolioPage() {
+  const { t } = useTranslation();
   const { user, walletAddress } = useAuthStore();
   const userId = user?.walletAddress ?? walletAddress ?? '';
 
@@ -29,10 +32,14 @@ export default function PortfolioPage() {
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold text-white">Portfolio</h1>
+      <h1 className="mb-6 text-2xl font-bold text-white">{t('portfolio.title')}</h1>
+
+      <div className="mb-6">
+        <ComplianceBanner />
+      </div>
 
       <section className="mb-8">
-        <h2 className="mb-3 text-sm font-medium text-predix-muted">Balances</h2>
+        <h2 className="mb-3 text-sm font-medium text-predix-muted">{t('portfolio.balances')}</h2>
         {balLoading ? (
           <LoadingSpinner />
         ) : (
@@ -44,18 +51,20 @@ export default function PortfolioPage() {
               >
                 <p className="text-xs text-predix-muted">{b.asset}</p>
                 <p className="mt-1 text-xl font-mono text-white">{formatUsd(b.available)}</p>
-                <p className="text-xs text-predix-muted">Locked {formatUsd(b.locked)}</p>
+                <p className="text-xs text-predix-muted">
+                  {t('portfolio.locked', { amount: formatUsd(b.locked) })}
+                </p>
               </div>
             ))}
             {!balances?.length && (
-              <p className="text-sm text-predix-muted">No balance data (KYC may be required)</p>
+              <p className="text-sm text-predix-muted">{t('portfolio.noBalanceData')}</p>
             )}
           </div>
         )}
       </section>
 
       <section>
-        <h2 className="mb-3 text-sm font-medium text-predix-muted">Positions</h2>
+        <h2 className="mb-3 text-sm font-medium text-predix-muted">{t('portfolio.positions')}</h2>
         {posLoading ? (
           <div className="flex justify-center py-8">
             <LoadingSpinner />

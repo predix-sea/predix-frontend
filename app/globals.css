@@ -3,18 +3,155 @@
 @tailwind utilities;
 
 :root {
+  --color-primary: #2563eb;
+  --color-yes: #16a34a;
+  --color-no: #dc2626;
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb;
+  --color-text-primary: #111827;
+  --color-text-secondary: #6b7280;
+
+  --background: var(--color-surface);
+  --card: var(--color-surface);
+  --border: var(--color-border);
+  --text-primary: var(--color-text-primary);
+  --text-secondary: var(--color-text-secondary);
+  --brand-blue: var(--color-primary);
+  --foreground: var(--text-primary);
+
+  --chip-active-bg: var(--brand-blue);
+  --chip-inactive-bg: var(--card);
+
+  --category-trending: #94a3b8;
+  --category-crypto: #6366f1;
+  --category-macro: #0ea5e9;
+  --category-sports: #d4a574;
+  --category-politics: #5b8fd9;
+  --category-environment: #3dab8c;
+}
+
+.dark {
+  --color-surface: #0f172a;
+  --color-border: #334155;
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+
   --background: #0b0f14;
-  --foreground: #e8edf4;
+  --card: var(--color-surface);
+  --border: var(--color-border);
+  --text-primary: var(--color-text-primary);
+  --text-secondary: var(--color-text-secondary);
+  --brand-blue: #3b82f6;
+  --foreground: var(--text-primary);
+
+  --chip-active-bg: var(--brand-blue);
+  --chip-inactive-bg: var(--card);
+
+  --category-trending: #94a3b8;
+  --category-crypto: #818cf8;
+  --category-macro: #38bdf8;
+  --category-sports: #d4a574;
+  --category-politics: #60a5fa;
+  --category-environment: #34d399;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
   min-height: 100vh;
+  font-family: -apple-system, 'Inter', 'PingFang SC', system-ui, sans-serif;
 }
 
 @layer utilities {
+  /* Vertical scroll with overscroll contained — use on dropdowns/lists instead of bare overflow-auto. */
+  .scroll-contained {
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .text-balance {
     text-wrap: balance;
+  }
+
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: var(--border);
+    border-radius: 9999px;
+  }
+
+  .animate-in {
+    animation: animate-in 200ms ease-out;
+  }
+
+  .fade-in {
+    animation: fade-in 200ms ease-out;
+  }
+
+  .slide-in-from-top-2 {
+    animation: slide-in-from-top-2 200ms ease-out;
+  }
+
+  .auth-content-switch {
+    animation: auth-content-switch 150ms ease-out;
+  }
+}
+
+@keyframes animate-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-from-top-2 {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes auth-content-switch {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

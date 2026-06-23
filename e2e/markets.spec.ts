@@ -6,9 +6,11 @@ test.describe('Markets flow', () => {
     await expect(page.getByRole('heading', { name: 'Markets' })).toBeVisible();
   });
 
-  test('login page shows connect button', async ({ page }) => {
+  test('login route redirects home and opens auth modal', async ({ page }) => {
     await page.goto('/login');
-    await expect(page.getByRole('button', { name: /Connect MetaMask/i })).toBeVisible();
+    await page.waitForURL((url) => !url.pathname.includes('/login'));
+    await expect(page).toHaveURL(/\//);
+    await expect(page.getByRole('dialog')).toBeVisible();
   });
 
   test('compliance blocked page', async ({ page }) => {

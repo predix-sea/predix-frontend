@@ -1,4 +1,6 @@
 import type { ApiError, ApiResponse } from '@/types';
+import { useAuthStore } from '@/stores/authStore';
+import { useUiStore } from '@/stores/uiStore';
 
 const DEFAULT_BASE =
   typeof window !== 'undefined'
@@ -58,6 +60,11 @@ export async function bffRequest<T>(
   const responseTraceId = response.headers.get('X-Trace-Id') ?? traceId;
 
   if (response.status === 401 && !options.skipAuth) {
+    if (typeof window !== 'undefined' && tokenGetter()) {
+      useAuthStore.getState().logout();
+      useUiStore.getState().openAuthModal('login');
+    }
+
     const err: ApiError = {
       code: 'AUTH_INVALID_TOKEN',
       message: 'Session expired',

@@ -1,19 +1,35 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { MarketStatusBadge } from '@/components/markets/MarketStatusBadge';
-import { OrderBookPanel } from '@/components/trading/OrderBookPanel';
-import { OrderForm } from '@/components/trading/OrderForm';
+import { MarketDetailHeader } from '@/components/trading/MarketDetailHeader';
+import { MarketMainPanel } from '@/components/trading/MarketMainPanel';
+import { TradingPanel } from '@/components/trading/TradingPanel';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { useMarket, useOrderBook } from '@/hooks/useMarkets';
-import { formatCountdown, formatUsd } from '@/lib/format';
+import { useTranslation } from '@/hooks/useTranslation';
+import { getYesOutcomeId } from '@/lib/marketPricing';
 
 export default function MarketDetailPage() {
+  const { t } = useTranslation();
   const params = useParams();
   const marketId = String(params.marketId ?? '');
 
   const { data: market, isLoading, error } = useMarket(marketId);
-  const { data: orderbook, isLoading: obLoading } = useOrderBook(marketId);
+  const {
+    data: orderbook,
+    isLoading: obLoading,
+    isError: obError,
+    error: obErrorDetail,
+  } = useOrderBook(marketId);
+
+  const [selectedOutcomeId, setSelectedOutcomeId] = useState('');
+
+  useEffect(() => {
+    if (market) {
+      setSelectedOutcomeId(getYesOutcomeId(market) ?? market.outcomes[0]?.id ?? '');
+    }
+  }, [market?.id]);
 
   if (isLoading) {
     return (
@@ -24,27 +40,35 @@ export default function MarketDetailPage() {
   }
 
   if (error || !market) {
-    return <p className="py-12 text-center text-predix-danger">Market not found</p>;
+    return <p className="py-12 text-center text-no">{t('trading.marketNotFound')}</p>;
   }
 
+  const activeOutcomeId = selectedOutcomeId || getYesOutcomeId(market) || market.outcomes[0]?.id || '';
+
   return (
-    <div className="grid gap-6 lg:grid-cols-3">
-      <div className="lg:col-span-2">
-        <div className="mb-4 flex flex-wrap items-center gap-3">
-          <h1 className="text-2xl font-bold text-white">{market.title}</h1>
-          <MarketStatusBadge status={market.status} />
+    <div className="pb-36 lg:pb-0">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start">
+        <div className="min-w-0">
+          <MarketDetailHeader market={market} />
+          <MarketMainPanel
+            market={market}
+            orderbook={orderbook}
+            isLoading={obLoading}
+            isError={obError}
+            error={obErrorDetail}
+          />
         </div>
-        {market.description && (
-          <p className="mb-4 text-predix-muted">{market.description}</p>
-        )}
-        <div className="mb-6 flex gap-6 text-sm text-predix-muted">
-          <span>Volume {formatUsd(market.volume)}</span>
-          <span>Closes {formatCountdown(market.closesAt)}</span>
+
+        <div className="fixed inset-x-0 bottom-0 z-40 max-h-[85vh] overflow-y-auto border-t border-border bg-card p-3 shadow-[0_-4px_24px_rgb(0_0_0_/0.08)] lg:static lg:z-auto lg:max-h-none lg:overflow-visible lg:border-t-0 lg:bg-transparent lg:p-0 lg:shadow-none">
+          <div className="lg:sticky lg:top-[4.5rem]">
+            <TradingPanel
+              market={market}
+              orderbook={orderbook}
+              selectedOutcomeId={activeOutcomeId}
+              onOutcomeChange={setSelectedOutcomeId}
+            />
+          </div>
         </div>
-        <OrderBookPanel orderbook={orderbook} isLoading={obLoading} />
-      </div>
-      <div>
-        <OrderForm market={market} />
       </div>
     </div>
   );

@@ -1,5 +1,48 @@
 import { bffRequest } from './bffClient';
-import type { Market, OrderBook, Position } from '@/types';
+import {
+  fetchMockOrderBook,
+  isMockOrderbookEnabled,
+  isOrderBookEmpty,
+  shouldFallbackToMock,
+} from '@/lib/mockOrderBook';
+import { generateMockCandles } from '@/lib/mockCandles';
+import type {
+  Candle,
+  CandleInterval,
+  ChartOutcome,
+  ChartRange,
+  Market,
+  OrderBook,
+  Position,
+  PriceHistory,
+} from '@/types';
+
+function normalizeCandle(raw: Record<string, unknown>): Candle {
+  return {
+    time: Number(raw.time),
+    open: Number(raw.open),
+    high: Number(raw.high),
+    low: Number(raw.low),
+    close: Number(raw.close),
+    volume: Number(raw.volume ?? 0),
+  };
+}
+
+function normalizeOrderBook(id: string, data: Record<string, unknown>): OrderBook {
+  return {
+    marketId: id,
+    bids: ((data.bids as { price: number; size: number }[]) ?? []).map((b) => ({
+      price: Number(b.price),
+      size: Number(b.size),
+    })),
+    asks: ((data.asks as { price: number; size: number }[]) ?? []).map((a) => ({
+      price: Number(a.price),
+      size: Number(a.size),
+    })),
+    lastTradePrice: data.lastTradePrice ? Number(data.lastTradePrice) : undefined,
+    updatedAt: data.updatedAt ? String(data.updatedAt) : undefined,
+  };
+}
 
 function normalizeMarket(raw: Record<string, unknown>): Market {
   const outcomesRaw = (raw.outcomes as Record<string, unknown>[] | undefined) ?? [
@@ -11,14 +54,20 @@ function normalizeMarket(raw: Record<string, unknown>): Market {
     id: String(raw.id ?? raw.marketId ?? ''),
     title: String(raw.title ?? raw.name ?? 'Untitled Market'),
     description: raw.description ? String(raw.description) : undefined,
-    category: raw.category ? String(raw.category) : undefined,
+    category: raw.category ? String(raw.category).toLowerCase() : undefined,
     status: String(raw.status ?? 'OPEN') as Market['status'],
     resolutionStatus: raw.resolutionStatus
       ? String(raw.resolutionStatus)
       : undefined,
     volume: Number(raw.volume ?? raw.totalVolume ?? 0),
     volume24h: raw.volume24h ? Number(raw.volume24h) : undefined,
-    closesAt: raw.closesAt ? String(raw.closesAt) : raw.endTime ? String(raw.endTime) : undefined,
+    closesAt: raw.closesAt
+      ? String(raw.closesAt)
+      : raw.closeTime
+        ? String(raw.closeTime)
+        : raw.endTime
+          ? String(raw.endTime)
+          : undefined,
     createdAt: raw.createdAt ? String(raw.createdAt) : undefined,
     outcomes: outcomesRaw.map((o, i) => ({
       id: String(o.id ?? `outcome-${i}`),
@@ -50,20 +99,48 @@ export const marketService = {
   },
 
   orderbook: async (id: string) => {
-    const data = await bffRequest<Record<string, unknown>>(`/api/v1/markets/${id}/orderbook`);
+    const useMock = isMockOrderbookEnabled();
+
+    try {
+      const data = await bffRequest<Record<string, unknown>>(`/api/v1/markets/${id}/orderbook`);
+      const book = normalizeOrderBook(id, data);
+      if (useMock && isOrderBookEmpty(book)) {
+        return fetchMockOrderBook(id);
+      }
+      return book;
+    } catch (error) {
+      if (useMock && shouldFallbackToMock(error)) {
+        return fetchMockOrderBook(id);
+      }
+      throw error;
+    }
+  },
+
+  priceHistory: async (
+    marketId: string,
+    params: { interval: CandleInterval; outcome: ChartOutcome; range: ChartRange },
+  ): Promise<PriceHistory> => {
+    const search = new URLSearchParams({
+      interval: params.interval,
+      outcome: params.outcome,
+    });
+
+    try {
+      const data = await bffRequest<Record<string, unknown>[]>(
+        `/api/v1/markets/${marketId}/candles?${search.toString()}`,
+      );
+      const candles = (data ?? []).map(normalizeCandle);
+      if (candles.length > 0) {
+        return { candles };
+      }
+    } catch {
+      // fall through to mock candles
+    }
+
     return {
-      marketId: id,
-      bids: ((data.bids as { price: number; size: number }[]) ?? []).map((b) => ({
-        price: Number(b.price),
-        size: Number(b.size),
-      })),
-      asks: ((data.asks as { price: number; size: number }[]) ?? []).map((a) => ({
-        price: Number(a.price),
-        size: Number(a.size),
-      })),
-      lastTradePrice: data.lastTradePrice ? Number(data.lastTradePrice) : undefined,
-      updatedAt: data.updatedAt ? String(data.updatedAt) : undefined,
-    } satisfies OrderBook;
+      candles: generateMockCandles(marketId, params),
+      isMock: true,
+    };
   },
 
   positions: async (marketId: string, userId: string) => {

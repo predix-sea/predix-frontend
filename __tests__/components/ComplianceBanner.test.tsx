@@ -1,11 +1,17 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { ComplianceBanner } from '@/components/compliance/ComplianceBanner';
 import { useAuthStore } from '@/stores/authStore';
+import { useLocaleStore } from '@/stores/localeStore';
 
 describe('ComplianceBanner', () => {
+  beforeEach(() => {
+    useLocaleStore.setState({ locale: 'en' });
+  });
+
   it('shows KYC message when required', () => {
     useAuthStore.setState({
+      isAuthenticated: true,
       compliance: 'KYC_REQUIRED',
       user: { walletAddress: '0x1', chainId: 1, kycStatus: 'PENDING' },
     });
@@ -16,6 +22,7 @@ describe('ComplianceBanner', () => {
 
   it('renders nothing when OK and KYC approved', () => {
     useAuthStore.setState({
+      isAuthenticated: true,
       compliance: 'OK',
       user: { walletAddress: '0x1', chainId: 1, kycStatus: 'APPROVED' },
     });
