@@ -330,7 +330,22 @@
     "colOutcome": "Outcome",
     "colSize": "Size",
     "colAvg": "Avg",
-    "colPnl": "PnL"
+    "colPnl": "PnL",
+    "ctfTitle": "CTF outcome positions (Yes / No)",
+    "ctfHint": "ERC-1155 Conditional Tokens by conditionId. Demo data until indexer/BFF balances are live.",
+    "ctfEmpty": "No CTF positions",
+    "ctfCondition": "conditionId",
+    "ctfSource": "Source",
+    "ctfSplitTitle": "Amoy Split demo",
+    "ctfSplitHint": "Wallet signs PredixCtfOps.split on Polygon Amoy (testnet).",
+    "ctfSplitUnavailable": "Set NEXT_PUBLIC_CTF_OPS_ADDRESS and NEXT_PUBLIC_COLLATERAL_TOKEN to enable Split.",
+    "ctfNeedCondition": "Set NEXT_PUBLIC_DEMO_CONDITION_ID (bytes32) for Split.",
+    "ctfWrongChain": "Switch wallet to chainId {chainId} (Amoy).",
+    "ctfAmount": "Amount (USDC units)",
+    "ctfSplit": "Split",
+    "ctfSplitting": "Splitting…",
+    "ctfTxSent": "Tx sent:",
+    "ctfTxConfirmed": "Tx confirmed:"
   },
   "compliance": {
     "regionBlocked": "Access from your region is not permitted.",

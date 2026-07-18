@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import { MarketDetailHeader } from '@/components/trading/MarketDetailHeader';
 import { MarketMainPanel } from '@/components/trading/MarketMainPanel';
 import { TradingPanel } from '@/components/trading/TradingPanel';
+import { CtfPositionsPanel } from '@/components/portfolio/CtfPositionsPanel';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { useMarket, useOrderBook } from '@/hooks/useMarkets';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -50,6 +51,9 @@ export default function MarketDetailPage() {
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start">
         <div className="min-w-0">
           <MarketDetailHeader market={market} />
+          <div className="mb-4">
+            <CtfPositionsPanel conditionId={market.conditionId} marketId={market.id} />
+          </div>
           <MarketMainPanel
             market={market}
             orderbook={orderbook}

@@ -2,6 +2,8 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { PositionTable } from '@/components/portfolio/PositionTable';
+import { CtfPositionsPanel } from '@/components/portfolio/CtfPositionsPanel';
+import { CtfSplitDemo } from '@/components/portfolio/CtfSplitDemo';
 import { ComplianceBanner } from '@/components/compliance/ComplianceBanner';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { useMarkets } from '@/hooks/useMarkets';
@@ -61,6 +63,12 @@ export default function PortfolioPage() {
             )}
           </div>
         )}
+      </section>
+
+      <CtfPositionsPanel />
+
+      <section className="mb-8">
+        <CtfSplitDemo conditionId={process.env.NEXT_PUBLIC_DEMO_CONDITION_ID} />
       </section>
 
       <section>

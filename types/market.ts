@@ -17,6 +17,8 @@ export interface Market {
   category?: string;
   status: MarketStatus;
   resolutionStatus?: ResolutionStatus;
+  /** Gnosis CTF condition id when wired from market-schema / indexer */
+  conditionId?: string;
   volume?: number;
   volume24h?: number;
   closesAt?: string;

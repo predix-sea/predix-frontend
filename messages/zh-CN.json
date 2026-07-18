@@ -330,7 +330,22 @@
     "colOutcome": "结果",
     "colSize": "数量",
     "colAvg": "均价",
-    "colPnl": "盈亏"
+    "colPnl": "盈亏",
+    "ctfTitle": "CTF 结果头寸（Yes / No）",
+    "ctfHint": "按 conditionId 展示 ERC-1155 条件代币。索引器/BFF 余额未接通前显示演示数据。",
+    "ctfEmpty": "暂无 CTF 头寸",
+    "ctfCondition": "conditionId",
+    "ctfSource": "来源",
+    "ctfSplitTitle": "Amoy Split 演示",
+    "ctfSplitHint": "钱包在 Polygon Amoy 上签名调用 PredixCtfOps.split。",
+    "ctfSplitUnavailable": "设置 NEXT_PUBLIC_CTF_OPS_ADDRESS 与 NEXT_PUBLIC_COLLATERAL_TOKEN 以启用 Split。",
+    "ctfNeedCondition": "请设置 NEXT_PUBLIC_DEMO_CONDITION_ID（bytes32）。",
+    "ctfWrongChain": "请将钱包切换到 chainId {chainId}（Amoy）。",
+    "ctfAmount": "数量（USDC）",
+    "ctfSplit": "Split",
+    "ctfSplitting": "拆分中…",
+    "ctfTxSent": "交易已发送：",
+    "ctfTxConfirmed": "交易已确认："
   },
   "compliance": {
     "regionBlocked": "您所在地区不允许访问。",

@@ -25,6 +25,7 @@ Failures: nonce expired → retry; signature rejected → show error; CN blocked
 3. Client validation → `POST /api/v1/orders`
 4. Backend matching + CTF/UMA settlement (async)
 5. UI polls orders/orderbook for status
+6. Portfolio / market detail show CTF Yes/No positions (conditionId; demo or indexer)
 
 KYC not approved: form disabled, banner shown.
 
